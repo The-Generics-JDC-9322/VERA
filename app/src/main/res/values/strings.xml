@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">VERA</string>
+    <string name="title_activity_fitbit_selector">FitbitSelector</string>
 </resources>
