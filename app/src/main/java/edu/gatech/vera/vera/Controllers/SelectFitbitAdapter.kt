@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import edu.gatech.vera.vera.R
-import org.w3c.dom.Text
 
-class SelectFitbitAdapter(val items: ArrayList<String>): RecyclerView.Adapter<SelectFitbitAdapter.ViewHolder>() {
+class SelectFitbitAdapter(val items: ArrayList<String>, val clickListener: (String) -> Unit): RecyclerView.Adapter<SelectFitbitAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_fitbit_list, parent, false)
@@ -18,6 +17,7 @@ class SelectFitbitAdapter(val items: ArrayList<String>): RecyclerView.Adapter<Se
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.fitbitName?.text = items[position]
+        holder?.bind(items[position], clickListener)
     }
 
     override fun getItemCount(): Int {
@@ -26,5 +26,9 @@ class SelectFitbitAdapter(val items: ArrayList<String>): RecyclerView.Adapter<Se
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val fitbitName : TextView = itemView.findViewById(R.id.fitbitName)
+
+        fun bind(fitbit: String, clickListener: (String) -> Unit) {
+            itemView.setOnClickListener { clickListener(fitbit) }
+        }
     }
 }
