@@ -70,6 +70,7 @@
                 <!--android:layout_marginTop="36dp" app:layout_constraintTop_toBottomOf="@+id/fitbitId"-->
                 <!--app:layout_constraintHorizontal_bias="0.502"/>-->
     <!--</android.support.constraint.ConstraintLayout>-->
+
     <android.support.constraint.ConstraintLayout
             android:layout_width="364dp"
             android:layout_height="56dp" app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +81,7 @@
                 android:text="Logout"
                 android:layout_width="98dp"
                 android:layout_height="42dp" android:id="@+id/logout"
-                android:background="@drawable/logout_button"
+                android:background="@drawable/pages_button_logout"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" android:layout_marginTop="8dp"
@@ -99,14 +100,55 @@
     <ImageView
             android:layout_width="180dp"
             android:layout_height="244dp" app:srcCompat="@drawable/fitbit_inspire_hr"
-            android:id="@+id/fitbitImg" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/header"
+            android:id="@+id/fitbitImg"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:contentDescription="fitbitImg"/>
+            android:contentDescription="fitbitImg"
+            app:layout_constraintTop_toBottomOf="@+id/header" app:layout_constraintBottom_toTopOf="@+id/disconnect"
+            android:layout_marginBottom="8dp"/>
     <Button
-            android:text="Button"
-            android:layout_width="104dp"
-            android:layout_height="94dp" tools:layout_editor_absoluteY="469dp"
-            tools:layout_editor_absoluteX="42dp" android:id="@+id/button11"/>
+            android:text="Pause Monitoring"
+            android:layout_width="108dp"
+            android:layout_height="138dp"
+            android:gravity="bottom|center"
+            android:drawableTop="@drawable/monitoring_pause_icon"
+            android:id="@+id/toggle_monitoring" style="@style/Button"
+            android:layout_marginStart="56dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/analytics"/>
+    <Button
+            android:text="Disconnect Device"
+            android:layout_width="108dp"
+            android:layout_height="138dp"
+            android:gravity="bottom|center"
+            android:drawableTop="@drawable/monitoring_stop_icon"
+            android:id="@+id/disconnect" style="@style/Button"
+            android:layout_marginEnd="56dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/analytics" android:layout_marginBottom="8dp"/>
+    <Button
+            android:text="Data Analytics"
+            android:layout_width="116dp"
+            android:layout_height="122dp"
+            android:gravity="bottom|center"
+            android:drawableTop="@drawable/pages_tab_analytics_icon"
+            android:id="@+id/analytics" style="@style/Button" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+            android:text="Monitoring"
+            android:layout_width="116dp"
+            android:layout_height="122dp"
+            android:gravity="bottom|center"
+            android:drawableTop="@drawable/pages_tab_monitoring_icon"
+            android:id="@+id/monitoring" style="@style/Button"
+            app:layout_constraintEnd_toStartOf="@+id/analytics" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+            android:text="Settings"
+            android:layout_width="116dp"
+            android:layout_height="122dp"
+            android:gravity="bottom|center"
+            android:drawableTop="@drawable/pages_tab_settings_icon"
+            android:id="@+id/settings" style="@style/Button" app:layout_constraintStart_toEndOf="@+id/analytics"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
 </android.support.constraint.ConstraintLayout>
