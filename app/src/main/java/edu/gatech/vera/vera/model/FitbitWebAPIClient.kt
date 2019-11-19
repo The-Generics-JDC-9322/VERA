@@ -1,4 +1,13 @@
 package edu.gatech.vera.vera.model
 
-interface FitbitWebAPIClient {
+object FitbitWebAPIClient {
+
+    
+
+
+    fun getHealthData(): HealthData {
+        return HealthData(0,0);
+    }
+
+
 }
