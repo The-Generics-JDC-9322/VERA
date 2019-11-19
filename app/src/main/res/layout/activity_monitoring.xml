@@ -83,7 +83,7 @@
             android:id="@+id/settings" style="@style/Button" app:layout_constraintStart_toEndOf="@+id/analytics"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
-            android:text="69 bpm"
+            android:text="-- bpm"
             android:layout_width="87dp"
             android:layout_height="49dp"
             android:gravity="center"
@@ -97,6 +97,7 @@
             android:layout_height="49dp"
             android:gravity="center"
             android:drawableLeft="@drawable/monitoring_recording_icon"
+            android:visibility="invisible"
             android:id="@+id/recording_status" android:textColor="@android:color/black"
             app:layout_constraintBottom_toTopOf="@+id/fitbitId"
             android:layout_marginBottom="24dp"
