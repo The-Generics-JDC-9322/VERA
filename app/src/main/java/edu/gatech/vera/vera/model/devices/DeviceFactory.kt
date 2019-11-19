@@ -16,7 +16,7 @@ object DeviceFactory {
 
 
         fun named(name: String): DeviceBuilder {
-            this.device.name = name
+            this.device.getInfo().name = name
 
             return this
         }
