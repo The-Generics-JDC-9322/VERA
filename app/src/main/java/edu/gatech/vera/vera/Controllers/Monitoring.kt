@@ -16,7 +16,7 @@ class Monitoring : AppCompatActivity() {
         setContentView(R.layout.activity_monitoring)
 
         val fitbitId = findViewById<TextView>(R.id.fitbitId)
-        fitbitId.text = fitbit.toString();
+        fitbitId.text = fitbit.toString()
 
         DeviceFactory.new()
             .ofType(FitbitCloudDevice::class)
