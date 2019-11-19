@@ -1,11 +1,19 @@
 package edu.gatech.vera.vera.model.devices
 
+import edu.gatech.vera.vera.model.FitbitWebAPIClient
 import edu.gatech.vera.vera.model.HealthData
 import edu.gatech.vera.vera.model.WearableDevice
 
 class FitbitCloudDevice : WearableDevice {
+    constructor() {
+        // FitbitWebAPIClient.subscribeToUpdates(this)
+    }
 
-    var deviceInfo:DeviceInfo = DeviceInfo("")
+    var lastHealthData: HealthData = HealthData(0, 0)
+    var deviceInfo: DeviceInfo = DeviceInfo("")
+
+
+
 
     override fun pauseMonitoring() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -16,7 +24,9 @@ class FitbitCloudDevice : WearableDevice {
     }
 
     override fun getHealthData(): HealthData {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // TODO check how old data is
+
+        return FitbitWebAPIClient.getHealthData() //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getStatus(): DeviceStatus {
