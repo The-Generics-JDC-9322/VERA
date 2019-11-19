@@ -14,7 +14,7 @@ class Startup : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
 
-        val loginButton : Button = findViewById(R.id.loginButton)
+        val loginButton = findViewById<Button>(R.id.loginButton)
         loginButton.setOnClickListener {
             onLoginClick(it)
         }
