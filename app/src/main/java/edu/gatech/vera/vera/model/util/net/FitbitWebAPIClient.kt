@@ -6,6 +6,8 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import edu.gatech.vera.vera.model.HealthData
+import edu.gatech.vera.vera.model.WearableDevice
+import edu.gatech.vera.vera.model.devices.FitbitCloudDevice
 import org.json.JSONObject
 import java.io.File
 import java.nio.charset.StandardCharsets
@@ -35,23 +37,27 @@ object FitbitWebAPIClient {
    // var actual_token: Any? = "{"access_token":"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMkJGQzciLCJzdWIiOiI3UE1NRzciLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyYWN0IHJociBycHJvIiwiZXhwIjoxNTc0MjU0MTA3LCJpYXQiOjE1NzQyMjUzMDd9.kIM6FVdnra2vHD5kCUaUlK4_NOrqwkdQ3zuV-OOjG8U","expires_in":28800,"refresh_token":"92f3f897e34f3d8d56db9e812ff39933145a3c582a076196d87b3f0f9b8339fd","scope":"profile activity heartrate","token_type":"Bearer","user_id":"7PMMG7"}"
 
 
-    fun getHealthData(): HealthData {
+    fun getHealthData(device: FitbitCloudDevice): HealthData {
         val accessToken = FitbitAPI.access_token
         val url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json"
+        val stepURL = "https://api.fitbit.com/1/user/-/activities/date/today.json"
+
         //val url = "https://api.fitbit.com/1/user/-/profile.json"
         var heartrateData : JSONObject = JSONObject(HashMap<String, String>())
 
         var healthData: HealthData = HealthData(0,0)
-        val request = object : JsonObjectRequest(Request.Method.GET,url,null,
-            Response.Listener { response ->
+        val request = object : JsonObjectRequest(Request.Method.GET,stepURL,null,
+            Response.Listener<JSONObject> { response ->
                 // Process the json
                 var maxHeartrate = response.toString().substring(response.toString().indexOf("max") + 5, response.toString().indexOf("max") + 7)
+                var steps : String = (response.get("summary") as JSONObject).get("steps").toString()
 
                 Log.d("LOG", response.toString())
+                Log.d("Steps", steps)
 //                bpm.setText("$maxHeartrate bpm")
 
-                healthData = HealthData(maxHeartrate.toInt(), 0)
-
+                device.lastHealthData = HealthData(steps.toInt(), 0)
+                Log.d("Health data", healthData.toString())
 
             }, Response.ErrorListener{ error ->
                 // Error in request
@@ -76,6 +82,7 @@ object FitbitWebAPIClient {
         }
         requestQueue.add(request)
 
+        Log.d("Health data", healthData.toString())
         return healthData
     }
 

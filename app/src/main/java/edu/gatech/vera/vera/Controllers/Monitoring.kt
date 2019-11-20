@@ -76,12 +76,23 @@ class Monitoring : AppCompatActivity() {
 //        }
 //        queue.add(request)
 
+        val recordingStatus = findViewById<TextView>(R.id.recording_status)
+        recordingStatus.visibility = View.INVISIBLE
+
         var bmpAmt = Monitor.healthData
         bpm.setText("${bmpAmt.bpm} bpm")
 
         Monitor.listener = object : HealthDataListener {
             override fun onVariableChanged(value: HealthData) {
+                Log.d("value", value.toString())
                 bpm.setText("${value.bpm} bpm")
+
+//                val toast = Toast.makeText(this@Monitoring, "Connected to Fitbit Cloud", Toast.LENGTH_SHORT)
+//                toast.show()
+//
+//                recordingStatus.visibility = View.VISIBLE
+
+
             }
         }
 

@@ -1,5 +1,6 @@
 package edu.gatech.vera.vera.model.devices
 
+import android.util.Log
 import edu.gatech.vera.vera.model.util.net.FitbitWebAPIClient
 import edu.gatech.vera.vera.model.HealthData
 import edu.gatech.vera.vera.model.WearableDevice
@@ -25,8 +26,9 @@ class FitbitCloudDevice : WearableDevice {
 
     override fun getHealthData(): HealthData {
         // TODO check how old data is
-
-        return FitbitWebAPIClient.getHealthData() //To change body of created functions use File | Settings | File Templates.
+        FitbitWebAPIClient.getHealthData(this)
+        Log.d("in FitbitCloudDevice", lastHealthData.toString())
+        return lastHealthData
     }
 
     override fun getStatus(): DeviceStatus {
