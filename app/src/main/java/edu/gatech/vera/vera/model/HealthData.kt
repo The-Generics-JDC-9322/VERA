@@ -10,3 +10,8 @@ data class HealthData(val bpm: Int, val steps: Int) {
     val timeStamp: Long = System.currentTimeMillis()
 
 }
+
+public interface HealthDataListener {
+
+    fun onVariableChanged(value: HealthData)
+}

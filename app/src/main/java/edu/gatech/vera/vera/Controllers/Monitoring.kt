@@ -14,6 +14,9 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import edu.gatech.vera.vera.R
+import edu.gatech.vera.vera.model.HealthData
+import edu.gatech.vera.vera.model.HealthDataListener
+import edu.gatech.vera.vera.model.Monitor
 import edu.gatech.vera.vera.model.devices.DeviceFactory
 import edu.gatech.vera.vera.model.devices.FitbitCloudDevice
 import edu.gatech.vera.vera.model.util.net.FitbitAPI
@@ -36,48 +39,59 @@ class Monitoring : AppCompatActivity() {
         val bpm = findViewById<TextView>(R.id.bpm)
         setupButtons()
 
-        val accessToken = FitbitAPI.access_token
-        val url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json"
-        //val url = "https://api.fitbit.com/1/user/-/profile.json"
-        val queue = Volley.newRequestQueue(this)
-        var heartrateData : JSONObject = JSONObject(HashMap<String, String>())
-        val request = object : JsonObjectRequest(Request.Method.GET,url,null,
-            Response.Listener { response ->
-                // Process the json
-                var maxHeartrate = response.toString().substring(response.toString().indexOf("max") + 5, response.toString().indexOf("max") + 7)
-
-                Log.d("LOG", response.toString())
-                bpm.setText("$maxHeartrate bpm")
-
-
-            }, Response.ErrorListener{ error ->
-                // Error in request
-
-                val data = String(error.networkResponse.data, StandardCharsets.UTF_8)
-                Log.d("LOG", data)
-            })
-        {
-            override fun getHeaders(): HashMap<String, String> {
-                val headers = HashMap<String, String>()
-//                val data = "22BFC6:a4469ef766024f63bb91726ddcea0e4f"
-//                val auth = Base64.encodeToString(data.toByteArray(), Base64.DEFAULT).trim()
+//        val accessToken = FitbitAPI.access_token
+//        val url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json"
+//        //val url = "https://api.fitbit.com/1/user/-/profile.json"
+//        val queue = Volley.newRequestQueue(this)
+//        var heartrateData : JSONObject = JSONObject(HashMap<String, String>())
+//        val request = object : JsonObjectRequest(Request.Method.GET,url,null,
+//            Response.Listener { response ->
+//                // Process the json
+//                var maxHeartrate = response.toString().substring(response.toString().indexOf("max") + 5, response.toString().indexOf("max") + 7)
 //
-//                Log.d("LOG", "$auth this is a test")
-//                Log.d("LOG", auth)
-                headers.put("Authorization", "Bearer $accessToken")
-                headers.put("Content-Type", "application/x-www-form-urlencoded")
+//                Log.d("LOG", response.toString())
+//                bpm.setText("$maxHeartrate bpm")
+//
+//
+//            }, Response.ErrorListener{ error ->
+//                // Error in request
+//
+//                val data = String(error.networkResponse.data, StandardCharsets.UTF_8)
+//                Log.d("LOG", data)
+//            })
+//        {
+//            override fun getHeaders(): HashMap<String, String> {
+//                val headers = HashMap<String, String>()
+////                val data = "22BFC6:a4469ef766024f63bb91726ddcea0e4f"
+////                val auth = Base64.encodeToString(data.toByteArray(), Base64.DEFAULT).trim()
+////
+////                Log.d("LOG", "$auth this is a test")
+////                Log.d("LOG", auth)
+//                headers.put("Authorization", "Bearer $accessToken")
+//                headers.put("Content-Type", "application/x-www-form-urlencoded")
+//
+//                return headers
+//
+//            }
+//        }
+//        queue.add(request)
 
-                return headers
+        var bmpAmt = Monitor.healthData
+        bpm.setText("${bmpAmt.bpm} bpm")
 
+        Monitor.listener = object : HealthDataListener {
+            override fun onVariableChanged(value: HealthData) {
+                bpm.setText("${value.bpm} bpm")
             }
         }
-        queue.add(request)
 
 
         DeviceFactory.new()
             .ofType(FitbitCloudDevice::class)
             .named(fitbit.toString())
             .build()
+
+
     }
 
     private fun setupButtons() {

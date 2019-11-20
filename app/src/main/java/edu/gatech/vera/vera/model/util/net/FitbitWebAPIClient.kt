@@ -8,6 +8,7 @@ import com.android.volley.toolbox.*
 import edu.gatech.vera.vera.model.HealthData
 import org.json.JSONObject
 import java.io.File
+import java.nio.charset.StandardCharsets
 
 object FitbitWebAPIClient {
 
@@ -35,7 +36,47 @@ object FitbitWebAPIClient {
 
 
     fun getHealthData(): HealthData {
-        return HealthData(0, 0);
+        val accessToken = FitbitAPI.access_token
+        val url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json"
+        //val url = "https://api.fitbit.com/1/user/-/profile.json"
+        var heartrateData : JSONObject = JSONObject(HashMap<String, String>())
+
+        var healthData: HealthData = HealthData(0,0)
+        val request = object : JsonObjectRequest(Request.Method.GET,url,null,
+            Response.Listener { response ->
+                // Process the json
+                var maxHeartrate = response.toString().substring(response.toString().indexOf("max") + 5, response.toString().indexOf("max") + 7)
+
+                Log.d("LOG", response.toString())
+//                bpm.setText("$maxHeartrate bpm")
+
+                healthData = HealthData(maxHeartrate.toInt(), 0)
+
+
+            }, Response.ErrorListener{ error ->
+                // Error in request
+
+                val data = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                Log.d("LOG", data)
+            })
+        {
+            override fun getHeaders(): HashMap<String, String> {
+                val headers = HashMap<String, String>()
+//                val data = "22BFC6:a4469ef766024f63bb91726ddcea0e4f"
+//                val auth = Base64.encodeToString(data.toByteArray(), Base64.DEFAULT).trim()
+//
+//                Log.d("LOG", "$auth this is a test")
+//                Log.d("LOG", auth)
+                headers.put("Authorization", "Bearer $accessToken")
+                headers.put("Content-Type", "application/x-www-form-urlencoded")
+
+                return headers
+
+            }
+        }
+        requestQueue.add(request)
+
+        return healthData
     }
 
     fun requestAccessToken(code: String) {
@@ -46,7 +87,9 @@ object FitbitWebAPIClient {
             code,
             Response.Listener<String> { response ->
                 Log.d("FitbitWebAPIClient", response.toString())
+                Log.d("AccessToken", JSONObject(response).get("access_token").toString())
                 token = response
+                FitbitAPI.access_token = JSONObject(response).get("access_token").toString()
             },
             Response.ErrorListener { error ->
 

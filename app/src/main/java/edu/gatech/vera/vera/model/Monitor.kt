@@ -12,8 +12,14 @@ object Monitor {
         }, 500)
     }
     var fitbit: WearableDevice = NullDevice()
-    val delay : Long = 100
+    val delay : Long = 5000
     val handler: Handler = Handler()
+    var healthData: HealthData = HealthData(0,0)
+        set(value) {
+            field = value
+            this.listener?.onVariableChanged(value)
+        }
+    var listener: HealthDataListener? = null
 
 
 
@@ -24,7 +30,7 @@ object Monitor {
     fun update() {
         Log.v("Debug", "Updating")
 
-
+        healthData = fitbit.getHealthData()
 
         handler.postDelayed(Runnable {
             update()
