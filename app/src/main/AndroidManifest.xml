@@ -29,6 +29,7 @@
 
                 <data
                         android:host="navaem8.wixsite.com"
+                        android:pathPrefix="/"
                         android:scheme="https"/>
             </intent-filter>
         </activity>
