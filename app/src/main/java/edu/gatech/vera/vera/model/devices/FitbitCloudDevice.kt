@@ -1,6 +1,6 @@
 package edu.gatech.vera.vera.model.devices
 
-import edu.gatech.vera.vera.model.FitbitWebAPIClient
+import edu.gatech.vera.vera.model.util.net.FitbitWebAPIClient
 import edu.gatech.vera.vera.model.HealthData
 import edu.gatech.vera.vera.model.WearableDevice
 
