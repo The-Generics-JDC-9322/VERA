@@ -1,5 +1,6 @@
 package edu.gatech.vera.vera.Controllers
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -44,7 +45,6 @@ class SelectFitbit : AppCompatActivity() {
     }
 
     private fun connectFitbit(fitbit : String) {
-        println("connectFitbit() -> $fitbit")
         val intent = Intent(this, Monitoring::class.java)
         intent.putExtra("fitbit", fitbit)
         startActivity(intent)
@@ -53,13 +53,24 @@ class SelectFitbit : AppCompatActivity() {
     private fun setUpLogout() {
         val logoutButton = findViewById<Button>(R.id.logout)
         logoutButton.setOnClickListener {
-            val intent = Intent(this, Startup::class.java)
-            startActivity(intent)
+            val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+            builder.setMessage("Are you sure you want to logout of VERA?")
+            builder.setPositiveButton("Disconnect", { dialog, which ->
+                dialog.dismiss()
+                val intent = Intent(this, Startup::class.java)
+                startActivity(intent)
+            })
+            builder.setNegativeButton("Cancel", { dialog, which ->
+                dialog.dismiss()
+            })
+
+            builder.create().show()
         }
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        println("log out user")
+        // TODO: logout
+        val intent = Intent(this, Startup::class.java)
+        startActivity(intent)
     }
 }

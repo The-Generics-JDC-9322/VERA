@@ -18,6 +18,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!--<style name="AlertDialogTheme" parent="Theme.AppCompat.Light.NoActionBar.Dialog.Alert">-->
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@android:color/holo_red_light</item>
+    </style>
+
     <!--<style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">-->
         <!--&lt;!&ndash;<item name="colorPrimary">@android:color/holo_red_light</item>&ndash;&gt;-->
         <!--<item name="colorAccent">@android:color/holo_red_light</item>-->
@@ -26,21 +33,21 @@
         <!--<item name="android:background">@android:color/holo_blue_bright</item>-->
     <!--</style>-->
     <!--Alert Dialog Theme -->
-    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <!--<style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">-->
 
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="buttonBarButtonStyle">@style/DialogButtonStyle</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:textColor">@color/colorPrimary</item>-->
+        <!--<item name="buttonBarButtonStyle">@style/DialogButtonStyle</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
 
-        <!--If minimum API level is greater than or equal to 23, you can define the color of Title text separately  -->
-        <item name="android:titleTextColor">@android:color/black</item>
+        <!--&lt;!&ndash;If minimum API level is greater than or equal to 23, you can define the color of Title text separately  &ndash;&gt;-->
+        <!--<item name="android:titleTextColor">@android:color/black</item>-->
 
-    </style>
+    <!--</style>-->
 
-    <!--This is to style the buttons of alert dialog-->
-    <style name="DialogButtonStyle" parent="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
+    <!--&lt;!&ndash;This is to style the buttons of alert dialog&ndash;&gt;-->
+    <!--<style name="DialogButtonStyle" parent="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog">-->
+        <!--<item name="android:textColor">@color/colorAccent</item>-->
+    <!--</style>-->
 
     <!--<item name="alertDialogTheme">@style/AlertDialogTheme</item>-->
 

@@ -1,14 +1,9 @@
 package edu.gatech.vera.vera.Controllers
 
-import android.app.Application
-import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import android.app.AlertDialog
 import android.view.View
 import android.widget.TextView
 import android.widget.Button
@@ -49,8 +44,18 @@ class Monitoring : AppCompatActivity() {
         val disconnectButton = findViewById<Button>(R.id.disconnect)
 
         logoutButton.setOnClickListener {
-            val intent = Intent(this, Startup::class.java)
-            startActivity(intent)
+            val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+            builder.setMessage("Are you sure you want to disconnect your Fitbit and logout of VERA?")
+            builder.setPositiveButton("Logout", { dialog, which ->
+                dialog.dismiss()
+                val intent = Intent(this, Startup::class.java)
+                startActivity(intent)
+            })
+            builder.setNegativeButton("Cancel", { dialog, which ->
+                dialog.dismiss()
+            })
+
+            builder.create().show()
         }
 
         monitoringButton.setOnClickListener {
@@ -90,30 +95,20 @@ class Monitoring : AppCompatActivity() {
 
         disconnectButton.setOnClickListener {
             // TODO: disconnect device
-            val builder = AlertDialog.Builder(this)
+            val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
             builder.setMessage("Are you sure you want to disconnect your Fitbit?")
             builder.setPositiveButton("Disconnect", { dialog, which ->
                 println("disconnecting")
+                dialog.dismiss()
+                val intent = Intent(this, SelectFitbit::class.java)
+                startActivity(intent)
             })
             builder.setNegativeButton("Cancel", { dialog, which ->
                 println("cancelling")
+                dialog.dismiss()
             })
 
-
-            val alert = builder.create()
-            alert.show()
-
-            val posButton = alert.getButton(DialogInterface.BUTTON_POSITIVE)
-            val negButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE)
-
-            if (posButton != null) {
-                posButton.setTextColor(0xff0000)
-            }
-
-            if (negButton != null) {
-                negButton.setTextColor(0xffffff)
-            }
+            builder.create().show()
         }
-
     }
 }
