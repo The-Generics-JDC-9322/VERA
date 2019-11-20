@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.LinearLayout
+import android.widget.Button
 import edu.gatech.vera.vera.R
 
 class SelectFitbit : AppCompatActivity() {
@@ -14,6 +15,8 @@ class SelectFitbit : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_fitbit)
+
+        setUpLogout()
 
         val fitbitSelector : RecyclerView = findViewById(R.id.fitbitSelector)
         loadSelector(fitbitSelector)
@@ -45,5 +48,18 @@ class SelectFitbit : AppCompatActivity() {
         val intent = Intent(this, Monitoring::class.java)
         intent.putExtra("fitbit", fitbit)
         startActivity(intent)
+    }
+
+    private fun setUpLogout() {
+        val logoutButton = findViewById<Button>(R.id.logout)
+        logoutButton.setOnClickListener {
+            val intent = Intent(this, Startup::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        println("log out user")
     }
 }

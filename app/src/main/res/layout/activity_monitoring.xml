@@ -43,7 +43,7 @@
             android:layout_height="98dp"
             android:gravity="bottom|center"
             android:drawableTop="@drawable/monitoring_pause_icon"
-            android:id="@+id/toggle_monitoring" style="@style/Button"
+            android:id="@+id/toggleMonitoring" style="@style/Button"
             android:layout_marginStart="72dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginBottom="16dp" app:layout_constraintBottom_toTopOf="@+id/analytics"/>
     <Button
