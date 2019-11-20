@@ -1,5 +1,9 @@
 package edu.gatech.vera.vera.Controllers
 
+import android.app.Application
+import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.support.v7.app.AppCompatActivity
@@ -62,33 +66,53 @@ class Monitoring : AppCompatActivity() {
         settingsButton.setOnClickListener {
             val toast = Toast.makeText(this, "Stay tuned for implementation!", Toast.LENGTH_SHORT)
             toast.show()
-//            val recordingStatus = findViewById<TextView>(R.id.recording_status)
-//            recordingStatus.visibility = View.VISIBLE
         }
 
         toggleMonitoringButton.setOnClickListener {
-            val imgId : Int
+            val imgId: Int
+            val recordingVisibility: Int
             if (monitoring) {
                 monitoring = false
                 toggleMonitoringButton.text = "Resume Monitoring"
                 imgId = R.drawable.monitoring_play_icon
+                recordingVisibility = View.INVISIBLE
             } else {
                 monitoring = true
                 toggleMonitoringButton.text = "Pause Monitoring"
                 imgId = R.drawable.monitoring_pause_icon
+                recordingVisibility = View.VISIBLE
             }
 
             toggleMonitoringButton.setCompoundDrawablesWithIntrinsicBounds(0, imgId, 0, 0)
+            val recordingStatus = findViewById<TextView>(R.id.recording_status)
+            recordingStatus.visibility = recordingVisibility
         }
 
         disconnectButton.setOnClickListener {
             // TODO: disconnect device
-//            val alert = AlertDialog.Builder(this)
-//            alert.setTitle("Are you sure you want to disconnect your Fitbit?")
-//
-//            alert.setPositiveButton("Disconnect")
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Are you sure you want to disconnect your Fitbit?")
+            builder.setPositiveButton("Disconnect", { dialog, which ->
+                println("disconnecting")
+            })
+            builder.setNegativeButton("Cancel", { dialog, which ->
+                println("cancelling")
+            })
 
 
+            val alert = builder.create()
+            alert.show()
+
+            val posButton = alert.getButton(DialogInterface.BUTTON_POSITIVE)
+            val negButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE)
+
+            if (posButton != null) {
+                posButton.setTextColor(0xff0000)
+            }
+
+            if (negButton != null) {
+                negButton.setTextColor(0xffffff)
+            }
         }
 
     }

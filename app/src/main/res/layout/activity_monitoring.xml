@@ -97,7 +97,6 @@
             android:layout_height="49dp"
             android:gravity="center"
             android:drawableLeft="@drawable/monitoring_recording_icon"
-            android:visibility="invisible"
             android:id="@+id/recording_status" android:textColor="@android:color/black"
             app:layout_constraintBottom_toTopOf="@+id/fitbitId"
             android:layout_marginBottom="24dp"
