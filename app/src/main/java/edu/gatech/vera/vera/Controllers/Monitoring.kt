@@ -1,13 +1,22 @@
 package edu.gatech.vera.vera.Controllers
 
+import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.view.View
 import android.widget.TextView
+import android.widget.Button
+import android.widget.Toast
 import edu.gatech.vera.vera.R
 import edu.gatech.vera.vera.model.devices.DeviceFactory
 import edu.gatech.vera.vera.model.devices.FitbitCloudDevice
+import kotlinx.android.synthetic.main.activity_monitoring.*
 
 class Monitoring : AppCompatActivity() {
+
+    private var monitoring : Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,9 +27,69 @@ class Monitoring : AppCompatActivity() {
         val fitbitId = findViewById<TextView>(R.id.fitbitId)
         fitbitId.text = fitbit.toString()
 
+        setupButtons()
+
         DeviceFactory.new()
             .ofType(FitbitCloudDevice::class)
             .named(fitbit.toString())
             .build()
+    }
+
+    private fun setupButtons() {
+        val logoutButton = findViewById<Button>(R.id.logout2)
+        val monitoringButton = findViewById<Button>(R.id.monitoring)
+        val analyticsButton = findViewById<Button>(R.id.analytics)
+        val settingsButton = findViewById<Button>(R.id.settings)
+
+        val toggleMonitoringButton = findViewById<Button>(R.id.toggleMonitoring)
+        val disconnectButton = findViewById<Button>(R.id.disconnect)
+
+        logoutButton.setOnClickListener {
+            val intent = Intent(this, Startup::class.java)
+            startActivity(intent)
+        }
+
+        monitoringButton.setOnClickListener {
+            val toast = Toast.makeText(this, "You're already on the Monitoring page!", Toast.LENGTH_SHORT)
+            toast.show()
+        }
+
+        analyticsButton.setOnClickListener {
+            val toast = Toast.makeText(this, "Stay tuned for implementation!", Toast.LENGTH_SHORT)
+            toast.show()
+        }
+
+        settingsButton.setOnClickListener {
+            val toast = Toast.makeText(this, "Stay tuned for implementation!", Toast.LENGTH_SHORT)
+            toast.show()
+//            val recordingStatus = findViewById<TextView>(R.id.recording_status)
+//            recordingStatus.visibility = View.VISIBLE
+        }
+
+        toggleMonitoringButton.setOnClickListener {
+            val imgId : Int
+            if (monitoring) {
+                monitoring = false
+                toggleMonitoringButton.text = "Resume Monitoring"
+                imgId = R.drawable.monitoring_play_icon
+            } else {
+                monitoring = true
+                toggleMonitoringButton.text = "Pause Monitoring"
+                imgId = R.drawable.monitoring_pause_icon
+            }
+
+            toggleMonitoringButton.setCompoundDrawablesWithIntrinsicBounds(0, imgId, 0, 0)
+        }
+
+        disconnectButton.setOnClickListener {
+            // TODO: disconnect device
+//            val alert = AlertDialog.Builder(this)
+//            alert.setTitle("Are you sure you want to disconnect your Fitbit?")
+//
+//            alert.setPositiveButton("Disconnect")
+
+
+        }
+
     }
 }
