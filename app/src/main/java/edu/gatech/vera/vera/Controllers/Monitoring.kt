@@ -76,8 +76,8 @@ class Monitoring : AppCompatActivity() {
 //        }
 //        queue.add(request)
 
-        val recordingStatus = findViewById<TextView>(R.id.recording_status)
-        recordingStatus.visibility = View.INVISIBLE
+//        val recordingStatus = findViewById<TextView>(R.id.recording_status)
+//        recordingStatus.visibility = View.INVISIBLE
 
         var bmpAmt = Monitor.healthData
         bpm.setText("${bmpAmt.bpm} bpm")
