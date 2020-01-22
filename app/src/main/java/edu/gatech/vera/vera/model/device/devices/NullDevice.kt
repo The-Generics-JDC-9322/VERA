@@ -1,7 +1,9 @@
-package edu.gatech.vera.vera.model.devices
+package edu.gatech.vera.vera.model.device.devices
 
 import edu.gatech.vera.vera.model.HealthData
-import edu.gatech.vera.vera.model.WearableDevice
+import edu.gatech.vera.vera.model.device.WearableDevice
+import edu.gatech.vera.vera.model.device.DeviceInfo
+import edu.gatech.vera.vera.model.device.DeviceStatus
 
 class NullDevice : WearableDevice {
     override fun pauseMonitoring() {

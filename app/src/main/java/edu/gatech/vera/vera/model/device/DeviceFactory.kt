@@ -1,9 +1,8 @@
-package edu.gatech.vera.vera.model.devices
+package edu.gatech.vera.vera.model.device
 
 import edu.gatech.vera.vera.model.Monitor
-import edu.gatech.vera.vera.model.WearableDevice
+import edu.gatech.vera.vera.model.device.devices.NullDevice
 import kotlin.reflect.KClass
-import kotlin.reflect.KType
 
 object DeviceFactory {
 
