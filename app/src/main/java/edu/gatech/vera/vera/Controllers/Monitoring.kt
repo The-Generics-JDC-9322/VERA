@@ -79,8 +79,8 @@ class Monitoring : AppCompatActivity() {
 //        val recordingStatus = findViewById<TextView>(R.id.recording_status)
 //        recordingStatus.visibility = View.INVISIBLE
 
-        var bmpAmt = Monitor.healthData
-        bpm.setText("${bmpAmt.bpm} bpm")
+        var bpmAmt = Monitor.healthData
+        bpm.setText("${bpmAmt.bpm} bpm")
 
         Monitor.listener = object : HealthDataListener {
             override fun onVariableChanged(value: HealthData) {
