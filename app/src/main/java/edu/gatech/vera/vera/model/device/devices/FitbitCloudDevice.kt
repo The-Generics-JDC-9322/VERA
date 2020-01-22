@@ -1,9 +1,11 @@
-package edu.gatech.vera.vera.model.devices
+package edu.gatech.vera.vera.model.device.devices
 
 import android.util.Log
 import edu.gatech.vera.vera.model.util.net.FitbitWebAPIClient
 import edu.gatech.vera.vera.model.HealthData
-import edu.gatech.vera.vera.model.WearableDevice
+import edu.gatech.vera.vera.model.device.WearableDevice
+import edu.gatech.vera.vera.model.device.DeviceInfo
+import edu.gatech.vera.vera.model.device.DeviceStatus
 
 class FitbitCloudDevice : WearableDevice {
     constructor() {

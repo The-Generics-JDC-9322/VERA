@@ -9,20 +9,12 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Button
 import android.widget.Toast
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import edu.gatech.vera.vera.R
 import edu.gatech.vera.vera.model.HealthData
 import edu.gatech.vera.vera.model.HealthDataListener
 import edu.gatech.vera.vera.model.Monitor
-import edu.gatech.vera.vera.model.devices.DeviceFactory
-import edu.gatech.vera.vera.model.devices.FitbitCloudDevice
-import edu.gatech.vera.vera.model.util.net.FitbitAPI
-import kotlinx.android.synthetic.main.activity_monitoring.*
-import org.json.JSONObject
-import java.nio.charset.StandardCharsets
+import edu.gatech.vera.vera.model.device.DeviceFactory
+import edu.gatech.vera.vera.model.device.devices.FitbitCloudDevice
 
 class Monitoring : AppCompatActivity() {
 

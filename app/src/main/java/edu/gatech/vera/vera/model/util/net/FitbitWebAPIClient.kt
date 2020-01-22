@@ -6,8 +6,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.*
 import edu.gatech.vera.vera.model.HealthData
-import edu.gatech.vera.vera.model.WearableDevice
-import edu.gatech.vera.vera.model.devices.FitbitCloudDevice
+import edu.gatech.vera.vera.model.device.devices.FitbitCloudDevice
 import org.json.JSONObject
 import java.io.File
 import java.nio.charset.StandardCharsets
