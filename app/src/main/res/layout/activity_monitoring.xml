@@ -8,123 +8,97 @@
         android:background="@color/colorAccent"
         tools:context=".Controllers.Monitoring">
 
-    <android.support.constraint.ConstraintLayout
-            android:layout_width="364dp"
-            android:layout_height="56dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/header" app:layout_constraintHorizontal_bias="1.0">
-        <Button
-                android:text="Logout"
-                android:layout_width="98dp"
-                android:layout_height="42dp" android:id="@+id/logout"
-                android:background="@drawable/logout_button"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintHorizontal_bias="0.965" style="@style/Button"/>
-        <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="69dp"
-                android:layout_height="27dp"
-                android:id="@+id/fitbitBattery" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" app:layout_constraintEnd_toStartOf="@+id/logout"
-                android:layout_marginEnd="8dp" app:layout_constraintHorizontal_bias="0.242"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
-    </android.support.constraint.ConstraintLayout>
-    <android.support.constraint.ConstraintLayout
-            android:layout_width="363dp"
-            android:layout_height="352dp"
-            android:id="@+id/body"
+    <Button
+            android:text="Logout"
+            android:layout_width="98dp"
+            android:layout_height="42dp" android:id="@+id/logout2"
+            android:background="@drawable/pages_button_logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/Button"/>
+    <ImageView
+            android:layout_width="157dp"
+            android:layout_height="223dp" app:srcCompat="@drawable/fitbit_inspire_hr"
+            android:id="@+id/fitbitImg"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/header" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/pageTabs" app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintVertical_bias="1.0">
-        <Button
-                android:text="Pause Monitoring"
-                android:layout_width="115dp"
-                android:layout_height="110dp"
-                android:id="@+id/pause"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
-                style="@style/Button"/>
-        <Button
-                android:text="Disconnect Device"
-                android:layout_width="115dp"
-                android:layout_height="110dp"
-                android:id="@+id/disconnect"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp"
-                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-                style="@style/Button"/>
-        <TextView
-                android:text="-- BPM"
-                android:layout_width="68dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:id="@+id/bpm" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="48dp"
-                app:layout_constraintStart_toStartOf="@+id/disconnect" android:layout_marginStart="8dp"
-                app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="16dp"
-                app:layout_constraintTop_toTopOf="parent"/>
-        <TextView
-                android:text="REC"
-                android:layout_width="68dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:id="@+id/recordingStatus" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="48dp"
-                app:layout_constraintHorizontal_bias="1.0" app:layout_constraintEnd_toEndOf="@+id/pause"
-                android:layout_marginEnd="8dp" android:layout_marginTop="16dp"
-                app:layout_constraintTop_toTopOf="parent"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="73dp"
-                android:layout_height="18dp"
-                android:gravity="center"
-                android:id="@+id/fitbitId" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                android:layout_marginTop="64dp" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"/>
-    </android.support.constraint.ConstraintLayout>
-    <android.support.constraint.ConstraintLayout
-            android:layout_width="364dp"
-            android:layout_height="121dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/pageTabs">
-        <Button
-                android:text="Data Analytics"
-                android:layout_width="115dp"
-                android:layout_height="110dp"
-                android:id="@+id/analytics" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp" style="@style/Button"/>
-        <Button
-                android:text="Settings"
-                android:layout_width="115dp"
-                android:layout_height="110dp"
-                android:id="@+id/settings" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp" app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintVertical_bias="0.4" app:layout_constraintStart_toEndOf="@+id/analytics"
-                style="@style/Button"/>
-        <Button
-                android:text="Monitoring"
-                android:layout_width="115dp"
-                android:layout_height="110dp"
-                android:id="@+id/monitoring" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp" app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintVertical_bias="0.6" app:layout_constraintEnd_toStartOf="@+id/analytics"
-                style="@style/Button"/>
-    </android.support.constraint.ConstraintLayout>
+            android:contentDescription="fitbitImg"
+            app:layout_constraintBottom_toTopOf="@+id/disconnect"
+            android:layout_marginBottom="16dp"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fitbitId"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintHorizontal_bias="0.503" app:layout_constraintBottom_toTopOf="@+id/fitbitImg"
+            android:layout_marginBottom="8dp" android:textSize="18sp" android:textColor="@android:color/black"/>
+    <Button
+            android:text="Pause Monitoring"
+            android:layout_width="96dp"
+            android:layout_height="98dp"
+            android:gravity="bottom|center"
+            android:drawableTop="@drawable/monitoring_pause_icon"
+            android:id="@+id/toggleMonitoring" style="@style/Button"
+            android:layout_marginStart="72dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="16dp" app:layout_constraintBottom_toTopOf="@+id/analytics"/>
+    <Button
+            android:text="Disconnect Device"
+            android:layout_width="96dp"
+            android:layout_height="98dp"
+            android:gravity="bottom|center"
+            android:drawableTop="@drawable/monitoring_stop_icon"
+            android:id="@+id/disconnect" style="@style/Button"
+            android:layout_marginEnd="72dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/analytics" android:layout_marginBottom="16dp"/>
+    <Button
+            android:text="Data Analytics"
+            android:layout_width="116dp"
+            android:layout_height="107dp"
+            android:gravity="bottom|center"
+            android:drawableTop="@drawable/pages_tab_analytics_icon"
+            android:id="@+id/analytics" style="@style/Button" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+            android:text="Monitoring"
+            android:layout_width="98dp"
+            android:layout_height="107dp"
+            android:gravity="bottom|center"
+            android:drawableTop="@drawable/pages_tab_monitoring_icon"
+            android:id="@+id/monitoring" style="@style/Button"
+            app:layout_constraintEnd_toStartOf="@+id/analytics" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+            android:text="Settings"
+            android:layout_width="97dp"
+            android:layout_height="107dp"
+            android:gravity="bottom|center"
+            android:drawableTop="@drawable/pages_tab_settings_icon"
+            android:id="@+id/settings" style="@style/Button" app:layout_constraintStart_toEndOf="@+id/analytics"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+            android:text="-- bpm"
+            android:layout_width="87dp"
+            android:layout_height="49dp"
+            android:gravity="center"
+            android:drawableLeft="@drawable/monitoring_heartbeat_icon"
+            android:id="@+id/bpm" android:textColor="@android:color/black" android:layout_marginEnd="56dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@+id/fitbitId"
+            android:layout_marginBottom="24dp"/>
+    <TextView
+            android:text="REC"
+            android:layout_width="80dp"
+            android:layout_height="49dp"
+            android:gravity="center"
+            android:drawableLeft="@drawable/monitoring_recording_icon"
+            android:id="@+id/recording_status" android:textColor="@android:color/black"
+            app:layout_constraintBottom_toTopOf="@+id/fitbitId"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="56dp" app:layout_constraintStart_toStartOf="parent"/>
 </android.support.constraint.ConstraintLayout>
