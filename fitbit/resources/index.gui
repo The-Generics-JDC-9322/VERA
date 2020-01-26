@@ -1,3 +1,6 @@
 <svg>
   <text id="status" />
+  <text id="console"/>
+  <text id="hrm" x="10" y="72%" class="large-value">4200</text>
+  <text id="updated" x="10" y="92%" class="updated">200 sec ago!</text>
 </svg>
