@@ -38,6 +38,7 @@ object Monitor {
             healthData = fitbit.getHealthData()
             Log.d("fitbit", fitbit.getHealthData().toString())
         }
+        Log.d("PullHealthData", pullHealthData.toString())
 
 
         handler.postDelayed(Runnable {
