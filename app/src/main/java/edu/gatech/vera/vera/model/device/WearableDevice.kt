@@ -1,7 +1,6 @@
-package edu.gatech.vera.vera.model
+package edu.gatech.vera.vera.model.device
 
-import edu.gatech.vera.vera.model.devices.DeviceInfo
-import edu.gatech.vera.vera.model.devices.DeviceStatus
+import edu.gatech.vera.vera.model.HealthData
 
 interface WearableDevice {
 

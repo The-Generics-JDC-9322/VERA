@@ -2,7 +2,8 @@ package edu.gatech.vera.vera.model
 
 import android.os.Handler
 import android.util.Log
-import edu.gatech.vera.vera.model.devices.NullDevice
+import edu.gatech.vera.vera.model.device.WearableDevice
+import edu.gatech.vera.vera.model.device.devices.NullDevice
 
 object Monitor {
     init {
@@ -13,9 +14,10 @@ object Monitor {
     }
 
     var pullHealthData: Boolean = true
-    var fitbit: WearableDevice = NullDevice()
-    val delay : Long = 5000
-    val handler: Handler = Handler()
+    private var fitbit: WearableDevice = NullDevice()
+    private const val delay : Long = 5000
+    private val handler: Handler = Handler()
+  
     var healthData: HealthData = HealthData(0,0)
         set(value) {
             field = value
