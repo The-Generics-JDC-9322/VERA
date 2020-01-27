@@ -6,6 +6,8 @@ import edu.gatech.vera.vera.model.device.DeviceStatus
 import edu.gatech.vera.vera.model.device.WearableDevice
 import edu.gatech.vera.vera.model.util.localhost.WebSocketRequest
 import edu.gatech.vera.vera.model.util.localhost.WebSocketServer
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FitbitLocalhostDevice : WearableDevice {
 
@@ -13,7 +15,9 @@ class FitbitLocalhostDevice : WearableDevice {
 
     fun init() {
         //todo probably need to launch this in its own thread
-        websocket.connect()
+        GlobalScope.launch {
+            websocket.connect()
+        }
     }
 
     override fun pauseMonitoring() {

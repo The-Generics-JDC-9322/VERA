@@ -19,9 +19,10 @@ class WebSocketServer {
     var request : WebSocketRequest = WebSocketRequest.ConnectRequest
 
         //todo this implementation is probably very buggy
-    fun connect(): Int {
+    suspend fun connect(): Int {
         serverSocket.use { serverSocket ->
             client = serverSocket.accept()
+            Log.d("WebSocketServer", "Got client connection")
             val inStream = BufferedReader(InputStreamReader(client.getInputStream()))
             val out = client.getOutputStream()
             val s = Scanner(client.getInputStream(), "UTF-8")
