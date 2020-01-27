@@ -3,9 +3,11 @@ package edu.gatech.vera.vera.Controllers
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import edu.gatech.vera.vera.R
 import edu.gatech.vera.vera.model.util.net.FitbitWebAPIClient
+
+
 
 class RedirectHereActivity : AppCompatActivity() {
 
