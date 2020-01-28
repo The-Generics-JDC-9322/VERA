@@ -50,7 +50,7 @@ class BadgeLogin : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        // TODO: impletent logout
+        // TODO: implement logout
         val intent = Intent(this, Startup::class.java)
         startActivity(intent)
     }
