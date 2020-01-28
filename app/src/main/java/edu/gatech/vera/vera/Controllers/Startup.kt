@@ -51,6 +51,7 @@ class Startup : AppCompatActivity() {
 
     private fun onLoginClick(view: View) {
         // TODO: change transition animation
+
 //        val intent = Intent(this, AuthLaunchActivity::class.java)
 //        val intent = Intent(this, AuthLaunchActivity::class.java)
 //
