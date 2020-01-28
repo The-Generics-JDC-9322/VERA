@@ -1,5 +1,6 @@
 package edu.gatech.vera.vera.model.device.devices
 
+import android.util.Log
 import edu.gatech.vera.vera.model.HealthData
 import edu.gatech.vera.vera.model.device.DeviceInfo
 import edu.gatech.vera.vera.model.device.DeviceStatus
@@ -8,15 +9,17 @@ import edu.gatech.vera.vera.model.util.localhost.WebSocketRequest
 import edu.gatech.vera.vera.model.util.localhost.WebSocketServer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class FitbitLocalhostDevice : WearableDevice {
 
-    var websocket: WebSocketServer = WebSocketServer()
+    private val webSocket: WebSocketServer = WebSocketServer
 
     fun init() {
         //todo probably need to launch this in its own thread
+        Log.d("FitbitLocalhostDevice", "before launch")
         GlobalScope.launch {
-            websocket.connect()
+            webSocket.connect()
         }
     }
 
@@ -25,12 +28,12 @@ class FitbitLocalhostDevice : WearableDevice {
     }
 
     override fun endConnection() {
-       websocket.request = WebSocketRequest.EndConnection
+       webSocket.request = WebSocketRequest.EndConnection
     }
 
     override fun getHealthData(): HealthData {
-        websocket.request = WebSocketRequest.GetHealthData
-        //todo wait for websocket to retrieve the info
+        webSocket.request = WebSocketRequest.GetHealthData
+
         return HealthData(0,0)
     }
 
