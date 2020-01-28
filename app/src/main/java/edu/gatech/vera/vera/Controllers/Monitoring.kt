@@ -179,4 +179,10 @@ class Monitoring : AppCompatActivity() {
             builder.create().show()
         }
     }
+
+    override fun onBackPressed() {
+        Monitor.pullHealthData = false
+        val intent = Intent(this, Startup::class.java)
+        startActivity(intent)
+    }
 }
