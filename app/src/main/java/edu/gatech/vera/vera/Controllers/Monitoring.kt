@@ -23,8 +23,10 @@ class Monitoring : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val fitbit = intent.extras.getSerializable("fitbit")
+        val badgeNumber = intent.extras.getSerializable("badgeNumber")
+
         Monitor.pullHealthData = true
-        println("Monitoring $fitbit")
+        println("Monitoring $badgeNumber using $fitbit")
         setContentView(R.layout.activity_monitoring)
 
         val fitbitId = findViewById<TextView>(R.id.fitbitId)

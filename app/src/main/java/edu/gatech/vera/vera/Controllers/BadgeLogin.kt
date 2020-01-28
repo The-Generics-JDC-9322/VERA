@@ -30,9 +30,13 @@ class BadgeLogin : AppCompatActivity() {
     }
 
     private fun onLoginClick(view: View) {
-        if (verifyFields()) {
+        val badgeNumber = findViewById<TextInputLayout>(R.id.badge).editText?.text.toString()
+        val password = findViewById<TextInputLayout>(R.id.password).editText?.text.toString()
+
+        if (verifyFields(badgeNumber, password)) {
             val intent = Intent(this, Monitoring::class.java)
             intent.putExtra("fitbit", "Fitbit 01")
+            intent.putExtra("badgeNumber", badgeNumber)
             startActivity(intent)
         } else {
             val toast = Toast.makeText(this@BadgeLogin, "Incorrect Badge Number/Password", Toast.LENGTH_SHORT)
@@ -40,13 +44,14 @@ class BadgeLogin : AppCompatActivity() {
         }
     }
 
-    private fun verifyFields(): Boolean {
-        val badge = findViewById<TextInputLayout>(R.id.badge)
-        val password = findViewById<TextInputLayout>(R.id.password)
+    private fun verifyFields(badgeNumber: String, password: String): Boolean {
+        // TODO: implement Badge Login Service
+        return badgeNumber.equals("00911") && password.equals("password")
+    }
 
-        val badgeTxt = badge.editText?.text.toString()
-        val passwordTxt = password.editText?.text.toString()
-
-        return badgeTxt.equals("00911") && passwordTxt.equals("password")
+    override fun onBackPressed() {
+        // TODO: implement logout
+        val intent = Intent(this, Startup::class.java)
+        startActivity(intent)
     }
 }
