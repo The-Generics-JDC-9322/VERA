@@ -35,7 +35,6 @@ class RedirectHereActivity : AppCompatActivity() {
 
         }
 
-//        val intent = Intent(this, SelectFitbit::class.java)
         val intent = Intent(this, BadgeLogin::class.java)
         startActivity(intent)
     }
