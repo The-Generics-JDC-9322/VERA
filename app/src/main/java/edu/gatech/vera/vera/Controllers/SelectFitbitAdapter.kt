@@ -8,6 +8,7 @@ import android.widget.TextView
 
 import edu.gatech.vera.vera.R
 
+@Deprecated("phased out with badge login")
 class SelectFitbitAdapter(val items: ArrayList<String>, val clickListener: (String) -> Unit): RecyclerView.Adapter<SelectFitbitAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

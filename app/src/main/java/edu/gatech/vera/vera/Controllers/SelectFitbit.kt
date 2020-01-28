@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.Button
 import edu.gatech.vera.vera.R
 
+@Deprecated("phased out with badge login")
 class SelectFitbit : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
