@@ -22,6 +22,9 @@ android {
             testCoverageEnabled true
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -40,5 +43,31 @@ dependencies {
     androidTestImplementation 'com.tinder.scarlet:scarlet:0.1.9'
     androidTestImplementation 'com.tinder.scarlet:websocket-okhttp:0.1.9'
     androidTestImplementation "com.squareup.okhttp3:okhttp:4.3.1"
+    testImplementation 'com.tinder.scarlet:scarlet:0.1.9'
+    testImplementation 'com.tinder.scarlet:message-adapter-built-in:0.1.9'
+    testImplementation 'com.tinder.scarlet:stream-adapter-built-in:0.1.9'
+    testImplementation 'com.tinder.scarlet:scarlet-core-internal:0.1.9'
+
+    testImplementation 'com.tinder.scarlet:websocket-okhttp:0.1.9'
+    testImplementation 'com.tinder.statemachine:statemachine:0.2.0'
+
+    testImplementation "com.squareup.okhttp3:okhttp:4.3.1"
+    testImplementation 'io.reactivex.rxjava2:rxjava:2.1.16'
+    androidTestImplementation 'junit:junit:4.12'
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile)
+        .matching { it.name == "compileDebugAndroidTestKotlin" }
+        .all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile)
+        .matching { it.name == "compileDebugUnitTestKotlin" }
+        .all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}

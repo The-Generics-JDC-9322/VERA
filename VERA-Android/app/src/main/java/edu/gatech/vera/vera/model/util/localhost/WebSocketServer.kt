@@ -27,16 +27,13 @@ object WebSocketServer {
         if (serverSocket.isClosed) {
             serverSocket = ServerSocket(4500)
         }
-        serverSocket.use {
+        try {
             Log.d("WebSocketServer", "Waiting for client connection")
             val client = serverSocket.accept()
             try {
                 Log.d("WebSocketServer", "Got client connection")
                 val inStream = BufferedReader(InputStreamReader(client.getInputStream()))
                 val out = client.getOutputStream()
-//                Log.d("WebSocketServerTesting", inStream.readLine())
-
-
                 val data = inStream.readLine()
                 Log.d("WebSocketServer", data)
                 val get = Pattern.compile("^GET").matcher(data)
@@ -57,11 +54,15 @@ object WebSocketServer {
                 } else {
                     Log.d("WebSocketServer", "Unknown message received")
                 }
-            } catch (se: SocketException) {
-                Log.e("WebSocketServer", se.message)
+            } catch (sE: Throwable) {
+                Log.e("WebSocketServer", sE.message)
             } finally {
                 client.close()
             }
+        } catch (sSE: Throwable) {
+            Log.e("WebSocketServer", sSE.message)
+        } finally {
+            serverSocket.close()
         }
         Log.d("WebSocketServer", "returned from connection")
     }
