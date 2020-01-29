@@ -9,9 +9,13 @@ import okhttp3.OkHttpClient
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
 
 import org.junit.Assert.*
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.Socket
+import java.security.MessageDigest
+import java.util.regex.Pattern
 
 
 class WebSocketServerAndroidTest {
@@ -35,7 +39,7 @@ class WebSocketServerAndroidTest {
 
         /* this is an HTTP get request that is the beginning of every websocket
          protocol */
-        val connectMsg = ("GET /chat HTTP/1.1\\r\n" +
+        val connectMsg = ("GET /chat HTTP/1.1\r\n" +
                 "Host: example.com:8000\r\n" +
                 "Upgrade: websocket\r\n" +
                 "Connection: Upgrade\r\n\r\n").toByteArray()
@@ -75,8 +79,32 @@ class WebSocketServerAndroidTest {
     }
 
     /**
+     * This test tests the webSocket handshake logic. The webSocket Server has
+     * to accept HTTP requests and then reply with an upgrade connection HTTP
+     * message. We need to handle the Sec-WebSocket-Key correctly.
+     *
+     * This mainly helped me find a bug in the handshake. The pattern was
+     * looking for "Sec-WebSocketServer-Key" instead of "Sec-WebSocket-Key"
+     */
+    @Test
+    fun secKey() {
+        val data = "GET / HTTP/1.1\n" +
+                "    Upgrade: websocket\n" +
+                "    Connection: Upgrade\n" +
+                "    Sec-WebSocket-Key: jqWEAOhTGw0TZUdqZUjVfg==\n" +
+                "    Sec-WebSocket-Version: 13\n" +
+                "    Host: localhost:4500\n" +
+                "    Accept-Encoding: gzip\n" +
+                "    User-Agent: okhttp/4.3.1"
+
+        val s = WebSocketServer.retrieveAcceptKey(data)
+        System.out.println(s)
+        assert(s != "")
+    }
+
+    /**
      * This test assures that we can connect to our webSocket Server using a
-     * Kotlin WebSocket Client library. This will mimic the javascript
+     * Kotlin WebSocket Client library. This will mimic the Javascript
      * WebSocket client that the Companion API uses.
      */
     @Test
@@ -95,7 +123,31 @@ class WebSocketServerAndroidTest {
             .webSocketFactory(client.newWebSocketFactory("ws://localhost:4500"))
             .build()
 
-        scarletInstance.create<WebService>()
+        val webService = scarletInstance.create<WebService>()
+
+        webService.observeWebSocketEvent()
+            .subscribe(
+                object: Subscriber<WebSocket.Event> {
+                    override fun onComplete() {
+                        System.out.println("onComplete")
+                    }
+
+                    override fun onSubscribe(s: Subscription?) {
+                        System.out.println("onSubscribe")
+                        webService.sendSubscribe("[hb,87]\r\n\r\n".toByteArray())
+                    }
+
+                    override fun onNext(t: WebSocket.Event?) {
+                        System.out.println("onNext")
+                    }
+
+                    override fun onError(t: Throwable?) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                })
+
+
 
         thread?.join()
     }

@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'org.jetbrains.dokka-android'
+
 
 android {
     compileSdkVersion 28
@@ -70,4 +72,9 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile)
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/dokka"
 }
