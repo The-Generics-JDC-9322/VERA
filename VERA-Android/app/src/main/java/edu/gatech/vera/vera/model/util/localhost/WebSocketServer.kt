@@ -1,126 +1,145 @@
 package edu.gatech.vera.vera.model.util.localhost
 
 import android.util.Log
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.OutputStream
-import java.lang.StringBuilder
-import java.net.ServerSocket
-import java.net.Socket
-import java.net.SocketException
-import java.security.MessageDigest
-import java.util.*
-import java.util.regex.Pattern
+import io.ktor.application.Application
+import io.ktor.application.install
+import io.ktor.http.cio.websocket.close
+import io.ktor.http.cio.websocket.CloseReason
+import io.ktor.http.cio.websocket.Frame
+import io.ktor.http.cio.websocket.readBytes
+import io.ktor.http.cio.websocket.readText
+import io.ktor.routing.routing
+import io.ktor.server.engine.ApplicationEngine
+import io.ktor.server.engine.applicationEngineEnvironment
+import io.ktor.server.engine.connector
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import io.ktor.websocket.WebSockets
+import io.ktor.websocket.webSocket
+import kotlinx.coroutines.channels.SendChannel
+import org.slf4j.impl.StaticLoggerBinder
+import java.lang.Integer.parseInt
 
 
-
+/**
+ * The WebSocketServer class is a singleton for handling the connecting to the
+ * Fitbit Companion API JRE. This class implements an HTTP Server using the
+ * ktor.io library and an embedded Netty Server. With an open endpoint on the
+ * private loopback address we accept webSocket connections and ktor handles
+ * all the WebSocket Protocol frames.
+ * <p>
+ * For more information about ktor see [Server Introduction](https://ktor.io/se
+ * rvers/index.html)
+ * <p>
+ * Messages from the Fitbit Companion that contain important data will be put
+ * into the data variable for consumption by the FitbitLocalhostDevice
+ *
+ * @author navaem@gatech.edu
+ * @see edu.gatech.vera.vera.model.device.devices.FitbitLocalhostDevice
+ */
 object WebSocketServer {
 
-    var serverSocket : ServerSocket = ServerSocket(4500)
+    /** Reference to the ApplicationEngine that runs the Server*/
+    var appEngine: ApplicationEngine? = null
+
+    /** The current request from the FitbitLocalhostDevice*/
     var request : WebSocketRequest = WebSocketRequest.ConnectRequest
 
-    var data = null
+    /** data for sending to or reading from the Companion*/
+    var data: Int? = null
 
-    @UseExperimental(ExperimentalStdlibApi::class)
+    /**
+     *
+     */
     fun connect() {
-        if (serverSocket.isClosed) {
-            serverSocket = ServerSocket(4500)
-        }
-        try {
-            Log.d("WebSocketServer", "Waiting for client connection")
-            val client = serverSocket.accept()
-            try {
-                Log.d("WebSocketServer", "Got client connection")
-                val inStream = BufferedReader(InputStreamReader(client.getInputStream()))
-                val out = client.getOutputStream()
-                //val data = client.getInputStream().readBytes().decodeToString()//dataB = StringBuilder()
-//                data =
-//                while ()//inStream.readLine()
-//                var data = dataB.toString()
-                val s = Scanner(client.getInputStream(), "UTF-8")
-                val data = s.useDelimiter("\\r\\n\\r\\n").next()
-                Log.d("WebSocketServer", data)
-                val get = Pattern.compile("^GET").matcher(data)
-                if (get.find()) {
-                    val match = Pattern.compile("Sec-WebSocket-Key: (.*)").matcher(data)
-                    match.find()
-                    val response = ("HTTP/1.1 101 Switching Protocols\r\n"
-                            + "Connection: Upgrade\r\n"
-                            + "Upgrade: websocket\r\n"
-                            + "Sec-WebSocketServer-Accept: "
-                            + android.util.Base64.encodeToString(MessageDigest.getInstance("SHA-1").digest((match.group(1) + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").toByteArray()),android.util.Base64.DEFAULT)
-                            + "\r\n\r\n").toByteArray()
-                    out.write(response, 0, response.size)
-                    Log.d("WebSocketServer", "Wrote upgrade Request to Client")
-                    manageConnection(client, s, out)
-
-                } else {
-                    Log.d("WebSocketServer", "Unknown message received")
-                }
-            } catch (sE: Throwable) {
-                Log.e("WebSocketServer", "${sE.printStackTrace()} ${sE.message}")
-            } finally {
-                client.close()
+        //define an application environment for the server
+        val env = applicationEngineEnvironment {
+            //not sure what this module does
+            module {
+                manageConnection()
             }
-        } catch (sSE: Throwable) {
-            Log.e("WebSocketServer", sSE.message)
-        } finally {
-            serverSocket.close()
+
+            //define host and port
+            connector {
+                host = "localhost"
+                port = 4500
+            }
+
+            //logging config
+            log = StaticLoggerBinder
+                .getSingleton()
+                .loggerFactory
+                .getLogger("Application")
+
         }
-        Log.d("WebSocketServer", "returned from connection")
+
+        //start the netty server
+        appEngine = embeddedServer(Netty, env).start(true)
     }
 
-    private fun manageConnection(client: Socket, inScanner: Scanner, out: OutputStream) {
-        var inputLine = inScanner.next()
-        while (client.isConnected) {
-            Log.d("WebSocketServer","Got input from socket " + inputLine)
+    /***
+     * T
+     */
+    private fun Application.manageConnection () {
+        //install WebSockets on our server
+        install(WebSockets) {
+            maxFrameSize = Long.MAX_VALUE // Disabled (max value). The connection will be closed if surpassed this length.
+            masking = false
+        }
 
-            out.write(request.requestStr.toByteArray())
-            Log.d("WebSocketServer", "Sending " + request.requestStr)
+        //define WebSocket Server
+        routing {
+            webSocket("/") {
+                for (frame in incoming) {
+                    when (frame) {
+                        is Frame.Text -> {
+                            val text = frame.readText()
+                            Log.d("WebSocketServer", "Client SAID: $text")
+                            val receivedRequest = WebSocketRequest.getType(text)
+                            handleReceiveMsg(receivedRequest, text, outgoing, ::close)
+                        }
+                        is Frame.Binary -> {
+                            val bytes = frame.readBytes()
+                            Log.d("WebSocketServer", "Client SAID: $bytes")
+                            val receivedRequest = WebSocketRequest.getType(bytes.toString())
+                            handleReceiveMsg(receivedRequest, bytes.toString(), outgoing, ::close)
 
-            if (request == WebSocketRequest.EndConnection) {
-                break
+                        }
+                    }
+                }
             }
-            inputLine = inScanner.next()
-            Log.d("WebSocketServer", "Found " + inputLine)
         }
     }
 
     /**
-     * This function retrieves the client webSocket key an computes the server
-     * Sec-WebSocketServer-Accept response.
      *
-     * Eg.
-     *
-     *     val data = "GET / HTTP/1.1\n" +
-     *         "    Upgrade: websocket\n" +
-     *         "    Connection: Upgrade\n" +
-     *         "    Sec-WebSocket-Key: jqWEAOhTGw0TZUdqZUjVfg==\n" +
-     *         "    Sec-WebSocket-Version: 13\n" +
-     *         "    Host: localhost:4500\n" +
-     *         "    Accept-Encoding: gzip\n" +
-     *         "    User-Agent: okhttp/4.3.1"
-     *     val s = WebSocketServer.retrieveAcceptKey(data)
-     *     System.out.println(s)
-     *
-     *     user@host:~$ 3GiMmUWBe7vXgH2VYv6pSoRjG78=
-     *
-     * @param packet the incoming upgrade to websocket connection packet
-     * @return String containing the Sec-WebSocketServer-Accept response
      */
-    fun retrieveAcceptKey(packet: String) : String {
-        Log.d("WebSocketServer.retrieveAcceptKey", packet)
-        val match = Pattern.compile("Sec-WebSocket-Key: (.*)").matcher(packet)
-        match.find()
-        val byteArrayToDigest = (match.group(1) + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").toByteArray()
-        val stringToEncode = MessageDigest.getInstance("SHA-1").digest(byteArrayToDigest)
-        val s = android.util.Base64.encodeToString(stringToEncode, android.util.Base64.DEFAULT)
-        return s
+    private suspend fun handleReceiveMsg(
+        receivedRequest: WebSocketRequest,
+        raw: String,
+        outgoingContent: SendChannel<Frame>,
+        close: suspend (CloseReason) -> Unit
+    ) {
+        when (receivedRequest) {
+            WebSocketRequest.EndConnection -> {
+                close(CloseReason(CloseReason.Codes.NORMAL, "Client said Bye"))
+            }
+            WebSocketRequest.NullRequest -> {}
+            WebSocketRequest.GetHealthData -> {
+                val splitArray = raw.split(",")
+                data = parseInt(splitArray[1])
+            }
+            WebSocketRequest.ConnectRequest -> {}
+        }
     }
 
+    /**
+     * Gracefully terminates the Server and sets appEngine to null. To restart
+     * the Server, connect() must be called again.
+     */
+    fun terminate() {
+        appEngine?.stop(1000, 5000)
+        appEngine = null
+    }
 
 }

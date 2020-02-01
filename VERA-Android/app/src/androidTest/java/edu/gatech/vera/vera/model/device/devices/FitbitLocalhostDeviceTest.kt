@@ -34,7 +34,7 @@ class FitbitLocalhostDeviceTest {
         var clientSocket = Socket()
 
         fun streamData() {
-            System.out.println(WebSocketServer.serverSocket.isClosed)
+            //System.out.println(WebSocketServer.serverSocket.isClosed)
             clientSocket = Socket("localhost", 4500)
             System.out.println("Created Client Socket")
             assertTrue(clientSocket.isConnected)
@@ -64,7 +64,7 @@ class FitbitLocalhostDeviceTest {
         System.out.println("Calling After")
         versaLite.kill()
         TimeUnit.SECONDS.sleep(1)
-        System.out.println(WebSocketServer.serverSocket.isClosed)
+        //System.out.println(WebSocketServer.serverSocket.isClosed)
     }
 
     @Test
