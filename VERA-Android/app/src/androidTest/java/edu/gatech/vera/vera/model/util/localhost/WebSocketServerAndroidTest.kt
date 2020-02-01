@@ -13,6 +13,7 @@ import io.reactivex.Flowable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
+import org.junit.BeforeClass
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -27,13 +28,6 @@ class WebSocketServerAndroidTest {
      */
     @Test
     fun connectUsingScarletSendingText() {
-        var thread: Thread? = null
-
-        //Launch server connection thread
-        Thread {
-            thread = Thread.currentThread()
-            WebSocketServer.connect()
-        }.start()
 
         val app = Class.forName("android.app.ActivityThread")
             .getMethod("currentApplication").invoke(null) as Application
@@ -86,13 +80,6 @@ class WebSocketServerAndroidTest {
      */
     @Test
     fun connectUsingScarletSendingBytes() {
-        var thread: Thread? = null
-
-        //Launch server connection thread
-        Thread {
-            thread = Thread.currentThread()
-            WebSocketServer.connect()
-        }.start()
 
         val app = Class.forName("android.app.ActivityThread")
             .getMethod("currentApplication").invoke(null) as Application
@@ -143,6 +130,22 @@ class WebSocketServerAndroidTest {
 
         @Send
         fun sendText(message: String)
+    }
+
+    companion object {
+
+        /**
+         * Method to start the WebSocketServer before running any tests.
+         */
+        @JvmStatic
+        @BeforeClass
+        fun startServer() {
+
+            //Launch server connection thread
+            Thread {
+                WebSocketServer.connect()
+            }.start()
+        }
     }
 
 

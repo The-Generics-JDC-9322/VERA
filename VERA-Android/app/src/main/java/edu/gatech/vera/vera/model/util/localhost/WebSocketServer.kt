@@ -1,5 +1,6 @@
 package edu.gatech.vera.vera.model.util.localhost
 
+import android.util.Base64
 import android.util.Log
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -100,9 +101,11 @@ object WebSocketServer {
                         }
                         is Frame.Binary -> {
                             val bytes = frame.readBytes()
-                            Log.d("WebSocketServer", "Client SAID: $bytes")
-                            val receivedRequest = WebSocketRequest.getType(bytes.toString())
-                            handleReceiveMsg(receivedRequest, bytes.toString(), outgoing, ::close)
+                            val bytesAsString = String(bytes)
+                            Log.d("WebSocketServer", "Client SAID: $bytesAsString")
+
+                            val receivedRequest = WebSocketRequest.getType(bytesAsString)
+                            handleReceiveMsg(receivedRequest, bytesAsString, outgoing, ::close)
 
                         }
                     }
