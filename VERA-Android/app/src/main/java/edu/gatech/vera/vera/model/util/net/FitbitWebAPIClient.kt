@@ -59,7 +59,7 @@ object FitbitWebAPIClient {
                 Log.d("Health data", healthData.toString())
 
             }, Response.ErrorListener{ error ->
-                // Error in request
+                // Error in outgoingRequest
 
                 val data = String(error.networkResponse.data, StandardCharsets.UTF_8)
                 Log.d("LOG", data)
@@ -86,7 +86,7 @@ object FitbitWebAPIClient {
     }
 
     fun requestAccessToken(code: String) {
-        // Formulate the request and handle the response.
+        // Formulate the outgoingRequest and handle the response.
         Log.d("Code", code)
         val accessTokenRequest = AccessTokenRequest(
             "$url/$tokenRequestPath",

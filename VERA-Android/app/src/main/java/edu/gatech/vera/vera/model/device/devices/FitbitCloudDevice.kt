@@ -26,14 +26,14 @@ class FitbitCloudDevice : WearableDevice {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getHealthData(): HealthData {
+    override suspend fun getHealthData(): HealthData {
         // TODO check how old data is
         FitbitWebAPIClient.getHealthData(this)
         Log.d("in FitbitCloudDevice", lastHealthData.toString())
         return lastHealthData
     }
 
-    override fun getStatus(): DeviceStatus {
+    override suspend fun getStatus(): DeviceStatus {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

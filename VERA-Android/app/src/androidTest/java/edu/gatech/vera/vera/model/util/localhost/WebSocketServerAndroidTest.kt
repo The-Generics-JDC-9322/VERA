@@ -39,12 +39,10 @@ class WebSocketServerAndroidTest {
             .retryOnConnectionFailure(false)
             .build()
 
-        val backoff = LinearBackoffStrategy(100_000_000)
         val scarletInstance = Scarlet.Builder()
-            .webSocketFactory(client.newWebSocketFactory("ws://localhost:4500"))
+            .webSocketFactory(client.newWebSocketFactory("ws://127.0.0.1:4500"))
             .lifecycle(AndroidLifecycle.ofApplicationForeground(app))
             .addStreamAdapterFactory(RxJava2StreamAdapterFactory())
-            .backoffStrategy(backoff)
             .build()
 
 
@@ -89,7 +87,7 @@ class WebSocketServerAndroidTest {
         val client = OkHttpClient.Builder().addInterceptor(logging)
             .build()
         val scarletInstance = Scarlet.Builder()
-            .webSocketFactory(client.newWebSocketFactory("ws://localhost:4500"))
+            .webSocketFactory(client.newWebSocketFactory("ws://127.0.0.1:4500"))
             .lifecycle(AndroidLifecycle.ofApplicationForeground(app))
             .addStreamAdapterFactory(RxJava2StreamAdapterFactory())
             .build()
@@ -141,10 +139,9 @@ class WebSocketServerAndroidTest {
         @BeforeClass
         fun startServer() {
 
-            //Launch server connection thread
-            Thread {
-                WebSocketServer.connect()
-            }.start()
+            //Launch server
+            WebSocketServer.connect()
+
         }
     }
 

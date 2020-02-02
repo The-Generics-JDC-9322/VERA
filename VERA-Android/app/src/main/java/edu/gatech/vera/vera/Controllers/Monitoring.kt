@@ -36,7 +36,7 @@ class Monitoring : AppCompatActivity() {
 //        //val url = "https://api.fitbit.com/1/user/-/profile.json"
 //        val queue = Volley.newRequestQueue(this)
 //        var heartrateData : JSONObject = JSONObject(HashMap<String, String>())
-//        val request = object : JsonObjectRequest(Request.Method.GET,url,null,
+//        val outgoingRequest = object : JsonObjectRequest(Request.Method.GET,url,null,
 //            Response.Listener { response ->
 //                // Process the json
 //                var maxHeartrate = response.toString().substring(response.toString().indexOf("max") + 5, response.toString().indexOf("max") + 7)
@@ -46,7 +46,7 @@ class Monitoring : AppCompatActivity() {
 //
 //
 //            }, Response.ErrorListener{ error ->
-//                // Error in request
+//                // Error in outgoingRequest
 //
 //                val data = String(error.networkResponse.data, StandardCharsets.UTF_8)
 //                Log.d("LOG", data)
@@ -66,7 +66,7 @@ class Monitoring : AppCompatActivity() {
 //
 //            }
 //        }
-//        queue.add(request)
+//        queue.add(outgoingRequest)
 
 //        val recordingStatus = findViewById<TextView>(R.id.recording_status)
 //        recordingStatus.visibility = View.INVISIBLE

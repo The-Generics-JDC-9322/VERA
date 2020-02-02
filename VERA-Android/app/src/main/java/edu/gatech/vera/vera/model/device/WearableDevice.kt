@@ -8,9 +8,9 @@ interface WearableDevice {
 
     fun endConnection()
 
-    fun getHealthData(): HealthData
+    suspend fun getHealthData(): HealthData
 
-    fun getStatus(): DeviceStatus
+    suspend fun getStatus(): DeviceStatus
 
     fun getInfo(): DeviceInfo
 

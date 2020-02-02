@@ -32,8 +32,8 @@ object Monitor {
     fun update() {
         Log.v("Debug", "Updating")
 
-        healthData = fitbit.getHealthData()
-        Log.d("fitbit", fitbit.getHealthData().toString())
+//        healthData = fitbit.getHealthData()
+//        Log.d("fitbit", fitbit.getHealthData().toString())
 
         handler.postDelayed(Runnable {
             update()
