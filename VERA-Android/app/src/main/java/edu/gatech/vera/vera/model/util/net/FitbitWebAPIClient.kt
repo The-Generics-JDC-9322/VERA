@@ -11,6 +11,7 @@ import org.json.JSONObject
 import java.io.File
 import java.nio.charset.StandardCharsets
 
+@Deprecated("Using FitbitLocalhostDevice Instead")
 object FitbitWebAPIClient {
 
     val cacheDir = File("~/.VERA/cache")
@@ -44,7 +45,7 @@ object FitbitWebAPIClient {
         //val url = "https://api.fitbit.com/1/user/-/profile.json"
         var heartrateData : JSONObject = JSONObject(HashMap<String, String>())
 
-        var healthData: HealthData = HealthData(0,0)
+        var healthData: HealthData = HealthData(0)
         val request = object : JsonObjectRequest(Request.Method.GET,stepURL,null,
             Response.Listener<JSONObject> { response ->
                 // Process the json
@@ -55,7 +56,7 @@ object FitbitWebAPIClient {
                 Log.d("Steps", steps)
 //                bpm.setText("$maxHeartrate bpm")
 
-                device.lastHealthData = HealthData(steps.toInt(), 0)
+                device.lastHealthData = HealthData(steps.toInt())
                 Log.d("Health data", healthData.toString())
 
             }, Response.ErrorListener{ error ->

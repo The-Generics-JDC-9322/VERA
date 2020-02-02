@@ -16,7 +16,7 @@ object Monitor {
     private var fitbit: WearableDevice = NullDevice()
     private const val delay : Long = 5000
     private val handler: Handler = Handler()
-    var healthData: HealthData = HealthData(0,0)
+    var healthData: HealthData = HealthData(-1)
         set(value) {
             field = value
             this.listener?.onVariableChanged(value)

@@ -4,8 +4,7 @@ import android.location.Location
 import android.os.SystemClock
 import java.sql.Timestamp
 
-data class HealthData(val bpm: Int, val steps: Int) {
-    //todo deprecate steps
+data class HealthData(val bpm: Int) {
     val location: Location? = null
     val timeStamp: Long = System.currentTimeMillis()
 

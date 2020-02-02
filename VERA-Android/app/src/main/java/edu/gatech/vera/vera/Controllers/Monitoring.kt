@@ -22,6 +22,7 @@ class Monitoring : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val fitbit = intent.extras.getSerializable("fitbit")
         println("Monitoring $fitbit")
         setContentView(R.layout.activity_monitoring)
@@ -29,71 +30,25 @@ class Monitoring : AppCompatActivity() {
         val fitbitId = findViewById<TextView>(R.id.fitbitId)
         fitbitId.text = fitbit.toString()
         val bpm = findViewById<TextView>(R.id.bpm)
+
         setupButtons()
-
-//        val accessToken = FitbitAPI.access_token
-//        val url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json"
-//        //val url = "https://api.fitbit.com/1/user/-/profile.json"
-//        val queue = Volley.newRequestQueue(this)
-//        var heartrateData : JSONObject = JSONObject(HashMap<String, String>())
-//        val outgoingRequest = object : JsonObjectRequest(Request.Method.GET,url,null,
-//            Response.Listener { response ->
-//                // Process the json
-//                var maxHeartrate = response.toString().substring(response.toString().indexOf("max") + 5, response.toString().indexOf("max") + 7)
-//
-//                Log.d("LOG", response.toString())
-//                bpm.setText("$maxHeartrate bpm")
-//
-//
-//            }, Response.ErrorListener{ error ->
-//                // Error in outgoingRequest
-//
-//                val data = String(error.networkResponse.data, StandardCharsets.UTF_8)
-//                Log.d("LOG", data)
-//            })
-//        {
-//            override fun getHeaders(): HashMap<String, String> {
-//                val headers = HashMap<String, String>()
-////                val data = "22BFC6:a4469ef766024f63bb91726ddcea0e4f"
-////                val auth = Base64.encodeToString(data.toByteArray(), Base64.DEFAULT).trim()
-////
-////                Log.d("LOG", "$auth this is a test")
-////                Log.d("LOG", auth)
-//                headers.put("Authorization", "Bearer $accessToken")
-//                headers.put("Content-Type", "application/x-www-form-urlencoded")
-//
-//                return headers
-//
-//            }
-//        }
-//        queue.add(outgoingRequest)
-
-//        val recordingStatus = findViewById<TextView>(R.id.recording_status)
-//        recordingStatus.visibility = View.INVISIBLE
 
         var bpmAmt = Monitor.healthData
         bpm.setText("${bpmAmt.bpm} bpm")
+
 
         Monitor.listener = object : HealthDataListener {
             override fun onVariableChanged(value: HealthData) {
                 Log.d("value", value.toString())
                 bpm.setText("${value.bpm} bpm")
 
-//                val toast = Toast.makeText(this@Monitoring, "Connected to Fitbit Cloud", Toast.LENGTH_SHORT)
-//                toast.show()
-//
-//                recordingStatus.visibility = View.VISIBLE
-
-
             }
         }
-
 
         DeviceFactory.new()
             .ofType(FitbitCloudDevice::class)
             .named(fitbit.toString())
             .build()
-
 
     }
 

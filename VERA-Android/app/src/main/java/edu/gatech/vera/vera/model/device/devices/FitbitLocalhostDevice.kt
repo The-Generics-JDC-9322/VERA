@@ -70,7 +70,7 @@ class FitbitLocalhostDevice : WearableDevice {
         //suspending function call to request
         val bpm = webSocket.request(WebSocketRequest.GetHealthData)
 
-        return HealthData(bpm,0)
+        return HealthData(bpm)
     }
 
     override suspend fun getStatus(): DeviceStatus {

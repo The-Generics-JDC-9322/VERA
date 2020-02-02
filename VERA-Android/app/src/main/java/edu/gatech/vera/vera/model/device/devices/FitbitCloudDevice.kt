@@ -12,7 +12,7 @@ class FitbitCloudDevice : WearableDevice {
         // FitbitWebAPIClient.subscribeToUpdates(this)
     }
 
-    var lastHealthData: HealthData = HealthData(0, 0)
+    var lastHealthData: HealthData = HealthData(0)
     var deviceInfo: DeviceInfo = DeviceInfo("")
 
 
