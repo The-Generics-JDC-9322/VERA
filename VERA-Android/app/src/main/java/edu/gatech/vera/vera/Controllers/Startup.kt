@@ -19,8 +19,9 @@ import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 import java.nio.charset.StandardCharsets.UTF_8
 
-class Startup : AppCompatActivity() {
 
+class Startup : AppCompatActivity() {
+    var loggedIn: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
@@ -28,6 +29,16 @@ class Startup : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.loginButton)
         loginButton.setOnClickListener {
             onLoginClick(it)
+        }
+    }
+    //When the user comes back from the fitbit app this method is run
+    override fun onResume() {
+        super.onResume()
+        //checks if they went to the fitbit app
+        if (loggedIn) {
+            //Redirects to fitbit.com to get auth token
+            intent = Intent(this, AuthLaunchActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -40,12 +51,22 @@ class Startup : AppCompatActivity() {
 
     private fun onLoginClick(view: View) {
         // TODO: change transition animation
+
 //        val intent = Intent(this, AuthLaunchActivity::class.java)
-        val intent = Intent(this, AuthLaunchActivity::class.java)
+//        val intent = Intent(this, AuthLaunchActivity::class.java)
+//
+//
+////        val intent = Intent(this, SelectFitbit::class.java)
+//
+//        startActivity(intent)
 
-
-//        val intent = Intent(this, SelectFitbit::class.java)
-
+        //Opens fitbit app if installed
+        val packageName = "com.fitbit.FitbitMobile"
+        var intent = packageManager.getLaunchIntentForPackage(packageName)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
         startActivity(intent)
+        //Not fool-proof method of checking if logged in, just that they went to the fitbit app
+        //Change later
+        loggedIn = true
     }
 }

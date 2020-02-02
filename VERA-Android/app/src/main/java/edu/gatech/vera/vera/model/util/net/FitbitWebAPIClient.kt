@@ -47,16 +47,19 @@ object FitbitWebAPIClient {
 
         var healthData: HealthData = HealthData(0)
         val request = object : JsonObjectRequest(Request.Method.GET,stepURL,null,
+
             Response.Listener<JSONObject> { response ->
                 // Process the json
-                var maxHeartrate = response.toString().substring(response.toString().indexOf("max") + 5, response.toString().indexOf("max") + 7)
-                var steps : String = (response.get("summary") as JSONObject).get("steps").toString()
+                val heartDataLastIndex = (response.get("activities-heart-intraday") as JSONObject).getJSONArray("dataset").length() - 1
+                var maxHeartrate = ((response.get("activities-heart-intraday") as JSONObject).getJSONArray("dataset").get(heartDataLastIndex) as JSONObject).get("value").toString()
+                //var steps : String = (response.get("summary") as JSONObject).get("steps").toString()
 
                 Log.d("LOG", response.toString())
-                Log.d("Steps", steps)
+                Log.d("Steps", maxHeartrate)
 //                bpm.setText("$maxHeartrate bpm")
 
-                device.lastHealthData = HealthData(steps.toInt())
+
+                device.lastHealthData = HealthData(maxHeartrate.toInt())
                 Log.d("Health data", healthData.toString())
 
             }, Response.ErrorListener{ error ->

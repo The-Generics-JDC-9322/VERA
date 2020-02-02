@@ -24,7 +24,10 @@ class Monitoring : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val fitbit = intent.extras.getSerializable("fitbit")
-        println("Monitoring $fitbit")
+        val badgeNumber = intent.extras.getSerializable("badgeNumber")
+
+        Monitor.pullHealthData = true
+        println("Monitoring $badgeNumber using $fitbit")
         setContentView(R.layout.activity_monitoring)
 
         val fitbitId = findViewById<TextView>(R.id.fitbitId)
@@ -66,6 +69,7 @@ class Monitoring : AppCompatActivity() {
             builder.setMessage("Are you sure you want to disconnect your Fitbit and logout of VERA?")
             builder.setPositiveButton("Logout", { dialog, which ->
                 dialog.dismiss()
+                Monitor.pullHealthData = false
                 val intent = Intent(this, Startup::class.java)
                 startActivity(intent)
             })
@@ -118,6 +122,7 @@ class Monitoring : AppCompatActivity() {
             builder.setPositiveButton("Disconnect", { dialog, which ->
                 println("disconnecting")
                 dialog.dismiss()
+                Monitor.pullHealthData = false
                 val intent = Intent(this, SelectFitbit::class.java)
                 startActivity(intent)
             })
@@ -128,5 +133,11 @@ class Monitoring : AppCompatActivity() {
 
             builder.create().show()
         }
+    }
+
+    override fun onBackPressed() {
+        Monitor.pullHealthData = false
+        val intent = Intent(this, Startup::class.java)
+        startActivity(intent)
     }
 }
