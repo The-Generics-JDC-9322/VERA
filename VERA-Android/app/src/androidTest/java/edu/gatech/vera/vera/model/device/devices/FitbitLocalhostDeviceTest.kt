@@ -37,7 +37,6 @@ class FitbitLocalhostDeviceTest {
         fun init() {
             System.out.println("Called Before")
             fitbit = FitbitLocalhostDevice()
-            (fitbit as FitbitLocalhostDevice).init()
         }
     }
 

@@ -32,8 +32,8 @@ import java.lang.Integer.parseInt
  * private loopback address we accept webSocket connections and ktor handles
  * all the WebSocket Protocol frames.
  *
- * For more information about ktor see [Server Introduction](https://ktor.io/se
- * rvers/index.html)
+ * For more information about ktor see
+ * [Server Introduction](https://ktor.io/servers/index.html)
  *
  * Messages from the Fitbit Companion that contain important data will be put
  * into the data variable for consumption by the FitbitLocalhostDevice.
@@ -59,10 +59,8 @@ object WebSocketServer {
 
     /**
      * Defines the ApplicationEnvironment and starts the embedded server.
-     * The server opens an HTTP endpoint at the specified port.
-     * <p>
-     * connect() should not be called if there is a server running on the
-     * specified port.
+     * The server opens an HTTP endpoint at the specified port. connect()
+     * should not be called if there is a server running on the specified port.
      */
     fun connect() {
         //define an application environment for the server
@@ -131,13 +129,10 @@ object WebSocketServer {
     /**
      * This function parses received messages from the WebSocket connection.
      * Based on the receivedRequest, the server will perform different actions.
-     * <p>
      * A received GetHealthData will tell the server to store the HealthData in
-     * the WebSocketServer Class data variable.
-     * <p>
-     * A received EndConnection will tell the server to close the connection
-     * with the client.
-     * <p>
+     * the WebSocketServer Class data variable. A received EndConnection will
+     * tell the server to close the connection with the client.
+     *
      * NullRequests and ConnectRequests are treated as NOPs.
      *
      * @param receivedRequest WebSocketRequest from the client
