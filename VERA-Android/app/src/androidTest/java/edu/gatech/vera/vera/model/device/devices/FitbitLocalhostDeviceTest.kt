@@ -133,7 +133,7 @@ class FitbitLocalhostDeviceTest {
     fun getHealthData() {
 
         GlobalScope.launch {
-            assertEquals(HealthData(heartBeatValue1, 0), fitbit.getHealthData())
+            assertEquals(HealthData(heartBeatValue1), fitbit.getHealthData())
 
         }
 
@@ -142,8 +142,8 @@ class FitbitLocalhostDeviceTest {
     @Test fun getMultipleHealthData() {
 
         GlobalScope.launch {
-            assertEquals(HealthData(heartBeatValue1, 0), fitbit.getHealthData())
-            assertEquals(HealthData(heartBeatValue2, 0), fitbit.getHealthData())
+            assertEquals(HealthData(heartBeatValue1), fitbit.getHealthData())
+            assertEquals(HealthData(heartBeatValue2), fitbit.getHealthData())
 
         }
     }

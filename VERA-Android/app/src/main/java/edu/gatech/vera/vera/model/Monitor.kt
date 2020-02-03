@@ -19,15 +19,8 @@ import kotlinx.coroutines.launch
  * @see Monitoring
  */
 object Monitor {
-    init {
-        val handler = Handler()
-//        handler.postDelayed(Runnable {
-//            update()
-//        }, 500)
-    }
 
-
-    /** The WearableDevice Monitor is monitoring*/
+    /** The WearableDevice Monitor is monitoring */
     private var fitbit: WearableDevice = NullDevice()
 
     /** The delay in handler calls in milliseconds */

@@ -28,7 +28,17 @@ import kotlinx.coroutines.launch
  */
 class FitbitLocalhostDevice : WearableDevice {
 
+    /** Reference to the WebSocketServer object*/
     private val webSocket: WebSocketServer = WebSocketServer
+
+    /**
+     * Constructor calls the init() function.
+     * */
+    init {
+        GlobalScope.launch {
+            init()
+        }
+    }
 
     /**
      * This method calls the WebSocketServer's method to start the embedded

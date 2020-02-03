@@ -45,7 +45,7 @@ class Monitoring : AppCompatActivity() {
 
         //define listener to set the bpm field text
         Monitor.listener = {
-                Log.d("value", it.toString())
+                Log.d("Monitoring value", it.toString())
 
                 //getting a warning from Android Studio here
                 bpm.setText("${it.bpm} bpm")
