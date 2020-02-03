@@ -15,6 +15,7 @@ import edu.gatech.vera.vera.model.HealthDataListener
 import edu.gatech.vera.vera.model.Monitor
 import edu.gatech.vera.vera.model.device.DeviceFactory
 import edu.gatech.vera.vera.model.device.devices.FitbitCloudDevice
+import edu.gatech.vera.vera.model.device.devices.FitbitLocalhostDevice
 
 class Monitoring : AppCompatActivity() {
 
@@ -22,37 +23,41 @@ class Monitoring : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val fitbit = intent.extras.getSerializable("fitbit")
-        val badgeNumber = intent.extras.getSerializable("badgeNumber")
-
-        Monitor.pullHealthData = true
-        println("Monitoring $badgeNumber using $fitbit")
         setContentView(R.layout.activity_monitoring)
 
+        val badgeNumber = intent.extras.getSerializable("badgeNumber")
+        val fitbit = intent.extras.getSerializable("fitbit")
         val fitbitId = findViewById<TextView>(R.id.fitbitId)
         fitbitId.text = fitbit.toString()
-        val bpm = findViewById<TextView>(R.id.bpm)
+
+        Log.d("MonitoringController","Monitoring $badgeNumber using $fitbit")
 
         setupButtons()
+        startListeningForHealthData()
+    }
 
-        var bpmAmt = Monitor.healthData
+    private fun startListeningForHealthData() {
+        val bpmAmt = Monitor.healthData
+        val bpm = findViewById<TextView>(R.id.bpm)
+
+        //getting a warning from Android Studio here
         bpm.setText("${bpmAmt.bpm} bpm")
 
+        //define listener to set the bpm field text
+        Monitor.listener = {
+                Log.d("value", it.toString())
 
-        Monitor.listener = object : HealthDataListener {
-            override fun onVariableChanged(value: HealthData) {
-                Log.d("value", value.toString())
-                bpm.setText("${value.bpm} bpm")
+                //getting a warning from Android Studio here
+                bpm.setText("${it.bpm} bpm")
 
-            }
         }
 
+        //Build the device
         DeviceFactory.new()
-            .ofType(FitbitCloudDevice::class)
-            .named(fitbit.toString())
+            .ofType(FitbitLocalhostDevice::class)
             .build()
 
+        Monitor.update()
     }
 
     private fun setupButtons() {
@@ -69,7 +74,7 @@ class Monitoring : AppCompatActivity() {
             builder.setMessage("Are you sure you want to disconnect your Fitbit and logout of VERA?")
             builder.setPositiveButton("Logout", { dialog, which ->
                 dialog.dismiss()
-                Monitor.pullHealthData = false
+                Monitor.endMonitoring()
                 val intent = Intent(this, Startup::class.java)
                 startActivity(intent)
             })
@@ -122,7 +127,7 @@ class Monitoring : AppCompatActivity() {
             builder.setPositiveButton("Disconnect", { dialog, which ->
                 println("disconnecting")
                 dialog.dismiss()
-                Monitor.pullHealthData = false
+                Monitor.endMonitoring()
                 val intent = Intent(this, SelectFitbit::class.java)
                 startActivity(intent)
             })
@@ -136,7 +141,7 @@ class Monitoring : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        Monitor.pullHealthData = false
+        Monitor.endMonitoring()
         val intent = Intent(this, Startup::class.java)
         startActivity(intent)
     }

@@ -21,7 +21,11 @@ import java.nio.charset.StandardCharsets.UTF_8
 
 
 class Startup : AppCompatActivity() {
+
+
     var loggedIn: Boolean = false
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
@@ -31,13 +35,19 @@ class Startup : AppCompatActivity() {
             onLoginClick(it)
         }
     }
-    //When the user comes back from the fitbit app this method is run
+
+    /**
+     * When the user comes back from the FitbitMobile app this method is run.
+     * It will pass the user on to the next activity.
+     */
     override fun onResume() {
         super.onResume()
         //checks if they went to the fitbit app
         if (loggedIn) {
+
             //Redirects to fitbit.com to get auth token
-            intent = Intent(this, AuthLaunchActivity::class.java)
+//            intent = Intent(this, AuthLaunchActivity::class.java)
+            intent = Intent(this, BadgeLogin::class.java)
             startActivity(intent)
         }
     }
@@ -60,11 +70,14 @@ class Startup : AppCompatActivity() {
 //
 //        startActivity(intent)
 
+        //todo add information alret that you are being redirected to Fitbit app
+
         //Opens fitbit app if installed
         val packageName = "com.fitbit.FitbitMobile"
         var intent = packageManager.getLaunchIntentForPackage(packageName)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
         startActivity(intent)
+
         //Not fool-proof method of checking if logged in, just that they went to the fitbit app
         //Change later
         loggedIn = true
