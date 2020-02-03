@@ -8,7 +8,7 @@ import edu.gatech.vera.vera.model.HealthData
  * device from VERA. Functions that require a response from the device are
  * suspending functions. The default implementation in VERA the
  * FitbitLocalhostDevice class.
- * <p>
+ *
  * For more information about suspending functions and coroutines see
  * (Coroutines Guide)[https://kotlinlang.org/docs/reference/coroutines/coroutin
  * es-guide.html]

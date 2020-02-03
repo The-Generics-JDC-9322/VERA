@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
  * the Fitbit Wearable Device running the Fitbit Companion API. It uses the
  * WebSocketServer object to handle low level communications with the Fitbit
  * Companion API.
- * <p>
+ *
  * The FitbitLocalhostDevice class's methods are called to perform requests to
  * the Fitbit Companion API running in the Fitbit Mobile App which then uses
  * a PeerSocket implementation to communicate with the Device API which can

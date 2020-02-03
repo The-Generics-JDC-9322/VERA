@@ -31,12 +31,12 @@ import java.lang.Integer.parseInt
  * ktor.io library and an embedded Netty Server. With an open endpoint on the
  * private loopback address we accept webSocket connections and ktor handles
  * all the WebSocket Protocol frames.
- * <p>
+ *
  * For more information about ktor see [Server Introduction](https://ktor.io/se
  * rvers/index.html)
- * <p>
+ *
  * Messages from the Fitbit Companion that contain important data will be put
- * into the data variable for consumption by the FitbitLocalhostDevice
+ * into the data variable for consumption by the FitbitLocalhostDevice.
  *
  * @author navaem@gatech.edu
  * @see edu.gatech.vera.vera.model.device.devices.FitbitLocalhostDevice
@@ -173,13 +173,13 @@ object WebSocketServer {
      * Kotlin CoroutineScope. It will launch an asynchronous request for
      * from the Companion API. It is possible that the request will
      * timeout or that no client is connected. In cases where the
-     * FitbitLocalhostDevice cannot retrieve the HealthData from the Companion
-     * API, it will return HealthData with a value of -1.
+     * FitbitLocalhostDevice cannot retrieve the data from the Companion
+     * API, it will return an int with a value of -1.
      *
      * @param request the Request to fulfill from the client
      * @return an integer for the requested data
      */
-    suspend fun request(request: WebSocketRequest) = runBlocking {
+    suspend fun request(request: WebSocketRequest): Int = runBlocking {
         var requestData = -1
 
         //wait for a session for at least 4.3 seconds

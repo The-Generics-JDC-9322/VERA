@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
  * This is a singleton Monitor class that handles the Monitoring of all data
  * to and from the WearableDevice connected to VERA. The main work of the class
  * is done by the update loop which also queues itself to run every delay ms.
- * <p>
+ *
  * This class interacts with the views through the controller class
  * Monitoring.kt.
  *
