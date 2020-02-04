@@ -11,12 +11,16 @@ import java.util.regex.Pattern
  */
 enum class WebSocketRequest(val requestStr: String, val regexStr: String) {
 
+    /** default request is no request. Mainly used as a placeholder. */
     NullRequest("", ""),
 
+    /** request heath data from the client connection */
     GetHealthData("[hb]\r\n\r\n", "[\\[]hb.*"),
 
+    /** request an end to the connection to the client. */
     EndConnection("[x]\r\n\r\n", "[\\[]x.*"),
 
+    /** request a connection be established */
     ConnectRequest("[c]\r\n\r\n", "[\\[]c.*");
 
     companion object {

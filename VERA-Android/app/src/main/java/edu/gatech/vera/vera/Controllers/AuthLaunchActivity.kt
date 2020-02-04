@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.customtabs.CustomTabsIntent
 import edu.gatech.vera.vera.model.util.net.FitbitAPI
 
+@Deprecated("Startup goes straight to Badge Login")
 class AuthLaunchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
