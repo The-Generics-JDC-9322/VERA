@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">VERA</string>
-    <string name="title_activity_fitbit_selector">FitbitSelector</string>
-    <string name="domain">navaem8.wixsite.com</string>
-    <string name="title_activity_redirect_here">RedirectHereActivity</string>
-</resources>
