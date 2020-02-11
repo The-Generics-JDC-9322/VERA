@@ -16,7 +16,7 @@ import java.net.URLEncoder
 
 
 
-
+@Deprecated("using localhost connections")
 class AccessTokenRequest(
     url: String,
     private val code: String,

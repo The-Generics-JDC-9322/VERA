@@ -11,6 +11,7 @@ import org.json.JSONObject
 import java.io.File
 import java.nio.charset.StandardCharsets
 
+@Deprecated("Using FitbitLocalhostDevice Instead")
 object FitbitWebAPIClient {
 
     val cacheDir = File("~/.VERA/cache")
@@ -44,8 +45,9 @@ object FitbitWebAPIClient {
         //val url = "https://api.fitbit.com/1/user/-/profile.json"
         var heartrateData : JSONObject = JSONObject(HashMap<String, String>())
 
-        var healthData: HealthData = HealthData(0,0)
-        val request = object : JsonObjectRequest(Request.Method.GET,url,null,
+        var healthData: HealthData = HealthData(0)
+        val request = object : JsonObjectRequest(Request.Method.GET,stepURL,null,
+
             Response.Listener<JSONObject> { response ->
                 // Process the json
                 val heartDataLastIndex = (response.get("activities-heart-intraday") as JSONObject).getJSONArray("dataset").length() - 1
@@ -56,11 +58,12 @@ object FitbitWebAPIClient {
                 Log.d("Steps", maxHeartrate)
 //                bpm.setText("$maxHeartrate bpm")
 
-                device.lastHealthData = HealthData(maxHeartrate.toInt(), 0)
+
+                device.lastHealthData = HealthData(maxHeartrate.toInt())
                 Log.d("Health data", healthData.toString())
 
             }, Response.ErrorListener{ error ->
-                // Error in request
+                // Error in outgoingRequest
 
                 val data = String(error.networkResponse.data, StandardCharsets.UTF_8)
                 Log.d("LOG", data)
@@ -87,7 +90,7 @@ object FitbitWebAPIClient {
     }
 
     fun requestAccessToken(code: String) {
-        // Formulate the request and handle the response.
+        // Formulate the outgoingRequest and handle the response.
         Log.d("Code", code)
         val accessTokenRequest = AccessTokenRequest(
             "$url/$tokenRequestPath",

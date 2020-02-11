@@ -8,7 +8,7 @@ import edu.gatech.vera.vera.R
 import edu.gatech.vera.vera.model.util.net.FitbitWebAPIClient
 
 
-
+@Deprecated("Startup goes straight to Badge Login")
 class RedirectHereActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

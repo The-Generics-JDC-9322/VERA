@@ -15,6 +15,7 @@ import edu.gatech.vera.vera.model.HealthDataListener
 import edu.gatech.vera.vera.model.Monitor
 import edu.gatech.vera.vera.model.device.DeviceFactory
 import edu.gatech.vera.vera.model.device.devices.FitbitCloudDevice
+import edu.gatech.vera.vera.model.device.devices.FitbitLocalhostDevice
 
 class Monitoring : AppCompatActivity() {
 
@@ -22,82 +23,41 @@ class Monitoring : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val fitbit = intent.extras.getSerializable("fitbit")
-        val badgeNumber = intent.extras.getSerializable("badgeNumber")
-
-        Monitor.pullHealthData = true
-        println("Monitoring $badgeNumber using $fitbit")
         setContentView(R.layout.activity_monitoring)
 
+        val badgeNumber = intent.extras.getSerializable("badgeNumber")
+        val fitbit = intent.extras.getSerializable("fitbit")
         val fitbitId = findViewById<TextView>(R.id.fitbitId)
         fitbitId.text = fitbit.toString()
-        val bpm = findViewById<TextView>(R.id.bpm)
+
+        Log.d("MonitoringController","Monitoring $badgeNumber using $fitbit")
+
         setupButtons()
+        startListeningForHealthData()
+    }
 
-//        val accessToken = FitbitAPI.access_token
-//        val url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json"
-//        //val url = "https://api.fitbit.com/1/user/-/profile.json"
-//        val queue = Volley.newRequestQueue(this)
-//        var heartrateData : JSONObject = JSONObject(HashMap<String, String>())
-//        val request = object : JsonObjectRequest(Request.Method.GET,url,null,
-//            Response.Listener { response ->
-//                // Process the json
-//                var maxHeartrate = response.toString().substring(response.toString().indexOf("max") + 5, response.toString().indexOf("max") + 7)
-//
-//                Log.d("LOG", response.toString())
-//                bpm.setText("$maxHeartrate bpm")
-//
-//
-//            }, Response.ErrorListener{ error ->
-//                // Error in request
-//
-//                val data = String(error.networkResponse.data, StandardCharsets.UTF_8)
-//                Log.d("LOG", data)
-//            })
-//        {
-//            override fun getHeaders(): HashMap<String, String> {
-//                val headers = HashMap<String, String>()
-////                val data = "22BFC6:a4469ef766024f63bb91726ddcea0e4f"
-////                val auth = Base64.encodeToString(data.toByteArray(), Base64.DEFAULT).trim()
-////
-////                Log.d("LOG", "$auth this is a test")
-////                Log.d("LOG", auth)
-//                headers.put("Authorization", "Bearer $accessToken")
-//                headers.put("Content-Type", "application/x-www-form-urlencoded")
-//
-//                return headers
-//
-//            }
-//        }
-//        queue.add(request)
+    private fun startListeningForHealthData() {
+        val bpmAmt = Monitor.healthData
+        val bpm = findViewById<TextView>(R.id.bpm)
 
-//        val recordingStatus = findViewById<TextView>(R.id.recording_status)
-//        recordingStatus.visibility = View.INVISIBLE
-
-        var bpmAmt = Monitor.healthData
+        //getting a warning from Android Studio here
         bpm.setText("${bpmAmt.bpm} bpm")
 
-        Monitor.listener = object : HealthDataListener {
-            override fun onVariableChanged(value: HealthData) {
-                Log.d("value", value.toString())
-                bpm.setText("${value.bpm} bpm")
+        //define listener to set the bpm field text
+        Monitor.listener = {
+                Log.d("Monitoring value", it.toString())
 
-//                val toast = Toast.makeText(this@Monitoring, "Connected to Fitbit Cloud", Toast.LENGTH_SHORT)
-//                toast.show()
-//
-//                recordingStatus.visibility = View.VISIBLE
+                //getting a warning from Android Studio here
+                bpm.setText("${it.bpm} bpm")
 
-
-            }
         }
 
-
+        //Build the device
         DeviceFactory.new()
-            .ofType(FitbitCloudDevice::class)
-            .named(fitbit.toString())
+            .ofType(FitbitLocalhostDevice::class)
             .build()
 
-
+        Monitor.update()
     }
 
     private fun setupButtons() {
@@ -114,7 +74,7 @@ class Monitoring : AppCompatActivity() {
             builder.setMessage("Are you sure you want to disconnect your Fitbit and logout of VERA?")
             builder.setPositiveButton("Logout", { dialog, which ->
                 dialog.dismiss()
-                Monitor.pullHealthData = false
+                Monitor.endMonitoring()
                 val intent = Intent(this, Startup::class.java)
                 startActivity(intent)
             })
@@ -167,7 +127,7 @@ class Monitoring : AppCompatActivity() {
             builder.setPositiveButton("Disconnect", { dialog, which ->
                 println("disconnecting")
                 dialog.dismiss()
-                Monitor.pullHealthData = false
+                Monitor.endMonitoring()
                 val intent = Intent(this, SelectFitbit::class.java)
                 startActivity(intent)
             })
@@ -181,7 +141,7 @@ class Monitoring : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        Monitor.pullHealthData = false
+        Monitor.endMonitoring()
         val intent = Intent(this, Startup::class.java)
         startActivity(intent)
     }
