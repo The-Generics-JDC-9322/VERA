@@ -10,7 +10,7 @@ data class HealthData(val bpm: Int) {
 
 }
 
-public interface HealthDataListener {
+interface HealthDataListener {
 
     fun onVariableChanged(value: HealthData)
 }

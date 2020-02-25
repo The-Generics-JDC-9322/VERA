@@ -17,7 +17,6 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.websocket.WebSockets
 import io.ktor.websocket.webSocket
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
@@ -109,7 +108,7 @@ object WebSocketServer {
                             val text = frame.readText()
                             Log.d("WebSocketServer", "Client SAID: $text")
                             val receivedRequest = WebSocketRequest.getType(text)
-                            handleReceiveMsg(receivedRequest, text, outgoing, ::close)
+                            handleReceiveMsg(receivedRequest, text, ::close)
                         }
                         is Frame.Binary -> {
                             val bytes = frame.readBytes()
@@ -117,7 +116,7 @@ object WebSocketServer {
                             Log.d("WebSocketServer", "Client SAID: $bytesAsString")
 
                             val receivedRequest = WebSocketRequest.getType(bytesAsString)
-                            handleReceiveMsg(receivedRequest, bytesAsString, outgoing, ::close)
+                            handleReceiveMsg(receivedRequest, bytesAsString, ::close)
 
                         }
                     }
@@ -137,13 +136,11 @@ object WebSocketServer {
      *
      * @param receivedRequest WebSocketRequest from the client
      * @param raw the raw data input
-     * @param outgoingContent SendChannel for sending Frames to the client
      * @param close close function for closing the connection
      */
     private suspend fun handleReceiveMsg(
         receivedRequest: WebSocketRequest,
         raw: String,
-        outgoingContent: SendChannel<Frame>,
         close: suspend (CloseReason) -> Unit
     ) {
         when (receivedRequest) {
@@ -198,7 +195,7 @@ object WebSocketServer {
 
             //set outgoingRequest to the request we are about to perform
             outgoingRequest = request
-            sess.outgoing?.send(Frame.Text(request.requestStr))
+            sess.outgoing.send(Frame.Text(request.requestStr))
 
             //wait until this.incomingRequest is GetHealthData
             requestData = withTimeoutOrNull(4300L) {

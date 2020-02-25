@@ -14,9 +14,4 @@ import java.io.InputStreamReader
 import java.net.Socket
 
 
-class WebSocketServerTest {
-
-
-
-
-}
+class WebSocketServerTest

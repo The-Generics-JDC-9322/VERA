@@ -1,15 +1,13 @@
 package edu.gatech.vera.vera.Controllers
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
+import android.support.v7.app.AppCompatActivity
 import android.text.InputType
-import android.util.Log
-import edu.gatech.vera.vera.R
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import edu.gatech.vera.vera.R
 
 class BadgeLogin : AppCompatActivity() {
 
@@ -25,11 +23,11 @@ class BadgeLogin : AppCompatActivity() {
 
         val loginButton = findViewById<Button>(R.id.loginButton2)
         loginButton.setOnClickListener {
-            onLoginClick(it)
+            onLoginClick()
         }
     }
 
-    private fun onLoginClick(view: View) {
+    private fun onLoginClick() {
         val badgeNumber = findViewById<TextInputLayout>(R.id.badge).editText?.text.toString()
         val password = findViewById<TextInputLayout>(R.id.password).editText?.text.toString()
 
