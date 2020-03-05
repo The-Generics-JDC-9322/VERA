@@ -3,10 +3,9 @@ package edu.gatech.vera.vera.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class HealthFeatureGeometry(val coordinates: IntArray) {
+data class HealthFeatureGeometry(val coordinates: DoubleArray) {
 
     val type = "Point"
-
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

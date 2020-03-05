@@ -11,12 +11,15 @@ import java.util.Calendar
 @Serializable
 data class HealthData(@Transient val bpm: Int) {
     val type: String = "Feature"
-    @Transient
-    private var coordinates = Location.
-    val geometry = HealthFeatureGeometry(coordinates)
+    val geometry = HealthFeatureGeometry(LocationService.getCoordinates())
     @Transient
     private var time = Calendar.getInstance().time.toString()
-    val properties = HealthGeoJsonProperties(time, bpm, Badge.number, Officer.name)
+    val properties = HealthGeoJsonProperties(
+        time,
+        bpm,
+        Badge.number,
+        Officer.name
+    )
 
 }
 
