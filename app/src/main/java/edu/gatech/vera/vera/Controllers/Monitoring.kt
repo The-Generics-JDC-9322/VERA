@@ -41,6 +41,10 @@ class Monitoring : AppCompatActivity() {
         this.startLocationService()
     }
 
+    /**
+     * This function sets the HealthData listener and handles updating the bpm
+     * display.
+     */
     private fun startListeningForHealthData() {
         val bpm = findViewById<TextView>(R.id.bpm)
 
@@ -66,6 +70,10 @@ class Monitoring : AppCompatActivity() {
         Monitor.update()
     }
 
+    /**
+     * This function starts the location service and provides it with
+     * location the last location found for processing.
+     */
     private fun startLocationService() {
 
         //start LocationService
@@ -75,7 +83,7 @@ class Monitoring : AppCompatActivity() {
             .addOnSuccessListener { location : Location? ->
                 // Got last known location. In some rare situations this can be null.
                 if (location != null) {
-                    LocationService.addLocation(location)
+                    LocationService.processLocation(location)
                 }
             }
     }

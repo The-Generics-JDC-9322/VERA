@@ -2,9 +2,14 @@ package edu.gatech.vera.vera.model
 
 import android.location.Location
 
+/**
+ * A provider of the most accurate current location. This class provides the
+ * coordinates of the accurate location through ```getCoordinates()```
+ */
 object LocationService {
 
-    val location: Location? = null
+    /** The location */
+    private var location: Location? = null
 
     /**
      * This function adds a location to the LocationService's queue and
@@ -22,7 +27,30 @@ object LocationService {
      *
      * @param location the location to consider as a new location
      */
-    fun addLocation(location: Location) {
+    fun processLocation(location: Location) {
+
+        if (this.location == null) {
+            this.location = location
+            return
+        }
+
+        val oneMinInMs = 60000
+
+        val thisTime = this.location!!.time
+
+        // this new location is at least a minute newer than the old location
+        if (location.time - thisTime < oneMinInMs) {
+            this.location = location
+        }
+
+        //the new location is twice as accurate
+        if (this.location!!.hasAccuracy() &&
+            location.accuracy * 2 < this.location!!.accuracy ) {
+            this.location = location
+        }
+
+        // TODO the last bullet point
+        //if (this.location!!.provider.equals(""))
 
     }
 
@@ -40,7 +68,7 @@ object LocationService {
         )
 
         if (location != null) {
-            arr = doubleArrayOf(location.longitude, location.latitude)
+            arr = doubleArrayOf(location!!.longitude, location!!.latitude)
         }
 
         return arr

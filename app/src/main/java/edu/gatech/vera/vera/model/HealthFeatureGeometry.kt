@@ -2,9 +2,18 @@ package edu.gatech.vera.vera.model
 
 import kotlinx.serialization.Serializable
 
+/**
+ * This class represents the location for HealthData.
+ *
+ * @see HealthData
+ * @see LocationService
+ *
+ * @param coordinates the coordinates passed in by HealthData
+ */
 @Serializable
 data class HealthFeatureGeometry(val coordinates: DoubleArray?) {
 
+    /** Health data is taken at a coordinate point */
     val type = "Point"
 
     override fun equals(other: Any?): Boolean {
