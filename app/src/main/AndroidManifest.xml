@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="edu.gatech.vera.vera">
+        package="edu.gatech.vera.vera">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -19,24 +19,17 @@
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".Controllers.AuthLaunchActivity">
-        </activity>
-        <activity android:name=".Controllers.RedirectHereActivity">
-            <intent-filter android:autoVerify="true">
+
                 <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                        android:host="navaem8.wixsite.com"
+                        android:host="cop.vera.gatech.edu"
                         android:pathPrefix="/"
                         android:scheme="https"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".Controllers.SelectFitbit">
         </activity>
         <activity android:name=".Controllers.Monitoring">
         </activity>

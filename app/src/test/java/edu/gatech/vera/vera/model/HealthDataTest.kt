@@ -9,7 +9,7 @@ class HealthDataTest {
 
 
     @Test
-    fun TestSerialization() {
+    fun testSerialization() {
         val json = Json(JsonConfiguration.Stable.copy())
 
         var serialized = json.stringify(HealthData.serializer(), HealthData(80))
