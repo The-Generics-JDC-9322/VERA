@@ -11,32 +11,58 @@ import java.util.*
  *
  * e.g.
  *
- *     var jsonObj = json.stringify(HealthData.serializer(), HealthData(80))
+ *     val json = Json(JsonConfiguration.Stable.copy())
  *
- *     var expected = `{`
- *                         type: "Feature"
+ *     var serialized = json.stringify(HealthData.serializer(), HealthData(80))
  *
- *                  + `}`
- *     assertEquals("{a:1, b:42}", )
+ *     var expected = """{
+ *         |"type":"Feature",
+ *         |"geometry":{
+ *             |"coordinates":null,
+ *             |"type":"Point"
+ *         |},
+ *         |"properties":{
+ *             |"timestamp":"${Calendar.getInstance().time}",
+ *             |"bpm":80,
+ *             |"badgeNumber":"",
+ *             |"officerName":"",
+ *             |"status":"NORMAL"
+ *         |}
+ *         |}""".trimMargin().replace("\\n".toRegex(), "")
  *
+ *     assertEquals(expected, serialized)
+ *
+ *
+ * @param bpm beats per minute defaulted to -1
  */
 @Serializable
 data class HealthData(@Transient val bpm: Int = -1) {
     val type: String = "Feature"
-    val geometry = HealthFeatureGeometry(LocationService.getCoordinates())
-    @Transient
-    private var time = Calendar.getInstance().time.toString()
+    val geometry = constructGeometry()
 
+    @Transient
+    private var currentTime = Calendar.getInstance().time.toString()
     val properties = HealthGeoJsonProperties(
-        time,
+        currentTime,
         bpm,
         Badge.number,
         Officer.name
     )
 
-}
+    /**
+     * This method returns the geometry. Invalid coordinates are returned as
+     * null.
+     *
+     * @return the geometry with the coordinates
+     */
+    fun constructGeometry(): HealthFeatureGeometry? {
 
-interface HealthDataListener {
+        val negativeInfArray = doubleArrayOf(Double.NEGATIVE_INFINITY,
+            Double.NEGATIVE_INFINITY)
 
-    fun onVariableChanged(value: HealthData)
+        if (LocationService.getCoordinates().contentEquals(negativeInfArray)) {
+            return HealthFeatureGeometry(null)
+        }
+        return HealthFeatureGeometry(LocationService.getCoordinates())
+    }
 }

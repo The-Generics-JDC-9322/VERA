@@ -3,7 +3,7 @@ package edu.gatech.vera.vera.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class HealthFeatureGeometry(val coordinates: DoubleArray) {
+data class HealthFeatureGeometry(val coordinates: DoubleArray?) {
 
     val type = "Point"
 
@@ -13,13 +13,20 @@ data class HealthFeatureGeometry(val coordinates: DoubleArray) {
 
         other as HealthFeatureGeometry
 
-        if (!coordinates.contentEquals(other.coordinates)) return false
+        if (coordinates != null) {
+            if (!coordinates.contentEquals(other.coordinates!!)) return false
+        } else {
+            return false
+        }
 
         return true
     }
 
     override fun hashCode(): Int {
-        return coordinates.contentHashCode()
+        if (coordinates != null) {
+            return coordinates.contentHashCode()
+        }
+        return 0
     }
 
 }

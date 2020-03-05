@@ -4,6 +4,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import org.junit.Assert.*
 import org.junit.Test
+import java.util.*
 
 class HealthDataTest {
 
@@ -17,16 +18,17 @@ class HealthDataTest {
         var expected = """{
             |"type":"Feature",
             |"geometry":{
-                |"coordinates":[-Inf,-Inf],
-                |"type":"Point",
+                |"coordinates":null,
+                |"type":"Point"
             |},
             |"properties":{
-                |"timestamp":sometime,
+                |"timestamp":"${Calendar.getInstance().time}",
                 |"bpm":80,
                 |"badgeNumber":"",
                 |"officerName":"",
-            |},
-            |}""".trimMargin()
+                |"status":"NORMAL"
+            |}
+            |}""".trimMargin().replace("\\n".toRegex(), "")
 
         assertEquals(expected, serialized)
 
