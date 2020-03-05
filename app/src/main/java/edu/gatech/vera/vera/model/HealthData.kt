@@ -8,6 +8,22 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.util.Calendar
 
+/**
+ * This implements a Feature object according to [RFC7946](https://tools.ietf.o
+ * rg/html/rfc7946#section-3.2). It is used to transmit health data to the
+ * Relay Transit Service.
+ *
+ * e.g.
+ *
+ *     var jsonObj = json.stringify(HealthData.serializer(), HealthData(80))
+ *
+ *     var expected = `{`
+ *                         type: "Feature"
+ *
+ *                  + `}`
+ *     assertEquals("{a:1, b:42}", )
+ *
+ */
 @Serializable
 data class HealthData(@Transient val bpm: Int) {
     val type: String = "Feature"
