@@ -37,11 +37,18 @@ import java.util.*
  */
 @Serializable
 data class HealthData(@Transient val bpm: Int = -1) {
+
+    /** The type should always be "Feature" */
     val type: String = "Feature"
+
+    /** The geometry representing a point where this health data was taken */
     val geometry = constructGeometry()
 
+    /** The time the health data was taken */
     @Transient
     private var currentTime = Calendar.getInstance().time.toString()
+
+    /** The properties of the GeoJSON containing the data */
     val properties = HealthGeoJsonProperties(
         currentTime,
         bpm,
