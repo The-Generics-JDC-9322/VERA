@@ -2,11 +2,21 @@ package edu.gatech.vera.vera.model
 
 import android.location.Location
 import android.os.SystemClock
+import io.ktor.http.httpDateFormat
+import kotlinx.serialization.Serializable
 import java.sql.Timestamp
+import java.time.LocalDateTime
+import java.util.Calendar
 
-data class HealthData(val bpm: Int) {
-    val location: Location? = null
-    val timeStamp: Long = System.currentTimeMillis()
+@Serializable
+data class HealthData(@Transient val bpm: Int) {
+    val type: String = "Feature"
+    @Transient
+    private var coordinates = Location.
+    val geometry = HealthFeatureGeometry(coordinates)
+    @Transient
+    private var time = Calendar.getInstance().time.toString()
+    val properties = HealthGeoJsonProperties(time, bpm, Badge.number, Officer.name)
 
 }
 

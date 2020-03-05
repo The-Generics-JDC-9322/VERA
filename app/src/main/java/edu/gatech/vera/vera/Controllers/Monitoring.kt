@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import edu.gatech.vera.vera.R
+import edu.gatech.vera.vera.model.LocationService
 import edu.gatech.vera.vera.model.Monitor
 import edu.gatech.vera.vera.model.device.DeviceFactory
 import edu.gatech.vera.vera.model.device.devices.FitbitLocalhostDevice
@@ -21,6 +22,9 @@ class Monitoring : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_monitoring)
+
+        //start LocationService
+        LocationService.onCreate(this.applicationContext)
 
         val badgeNumber = intent?.extras?.getSerializable("badgeNumber")
         val fitbit = intent?.extras?.getSerializable("fitbit")
