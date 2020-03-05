@@ -33,7 +33,7 @@ data class HealthGeoJsonProperties(val timestamp: String,
      *     var status = processBpm(-1)
      *
      *     assertEquals(HealthStatus, HealthStatus.NO_MEASUREMENT)
-     *     
+     *
      *     status = processBpm(101)
      *
      *     assertEquals(HealthStatus, HealthStatus.ELEVATED)
