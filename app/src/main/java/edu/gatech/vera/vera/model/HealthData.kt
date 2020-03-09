@@ -5,8 +5,9 @@ import kotlinx.serialization.Transient
 import java.util.*
 
 /**
- * This implements a Feature object according to [RFC7946](https://tools.ietf.o
- * rg/html/rfc7946#section-3.2). It is used to transmit health data to the
+ * This implements a Feature object according to
+ * [RFC7946](https://tools.ietf.org/html/rfc7946#section-3.2).
+ * It is used to transmit health data to the
  * Relay Transit Service.
  *
  * e.g.
