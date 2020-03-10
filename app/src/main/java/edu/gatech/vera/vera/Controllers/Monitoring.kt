@@ -13,8 +13,10 @@ import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import edu.gatech.vera.vera.R
+import edu.gatech.vera.vera.model.Badge
 import edu.gatech.vera.vera.model.LocationService
 import edu.gatech.vera.vera.model.Monitor
+import edu.gatech.vera.vera.model.Officer
 import edu.gatech.vera.vera.model.device.DeviceFactory
 import edu.gatech.vera.vera.model.device.devices.FitbitLocalhostDevice
 
@@ -30,6 +32,10 @@ class Monitoring : AppCompatActivity() {
         setContentView(R.layout.activity_monitoring)
 
         val badgeNumber = intent?.extras?.getSerializable("badgeNumber")
+
+        //set Badge.Number
+        Badge.number = badgeNumber.toString()
+
         val fitbit = intent?.extras?.getSerializable("fitbit")
         val fitbitId = findViewById<TextView>(R.id.fitbitId)
         fitbitId.text = fitbit?.toString()
