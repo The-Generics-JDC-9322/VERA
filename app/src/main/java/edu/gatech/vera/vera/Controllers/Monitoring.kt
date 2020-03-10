@@ -2,6 +2,7 @@ package edu.gatech.vera.vera.Controllers
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -9,8 +10,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import edu.gatech.vera.vera.R
+import edu.gatech.vera.vera.model.Badge
+import edu.gatech.vera.vera.model.LocationService
 import edu.gatech.vera.vera.model.Monitor
+import edu.gatech.vera.vera.model.Officer
 import edu.gatech.vera.vera.model.device.DeviceFactory
 import edu.gatech.vera.vera.model.device.devices.FitbitLocalhostDevice
 
@@ -18,21 +24,33 @@ class Monitoring : AppCompatActivity() {
 
     private var monitoring : Boolean = true
 
+    /** The FusedLocationClient for providing location data */
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_monitoring)
 
         val badgeNumber = intent?.extras?.getSerializable("badgeNumber")
+
+        //set Badge.Number
+        Badge.number = badgeNumber.toString()
+
         val fitbit = intent?.extras?.getSerializable("fitbit")
         val fitbitId = findViewById<TextView>(R.id.fitbitId)
         fitbitId.text = fitbit?.toString()
 
         Log.d("MonitoringController","Monitoring $badgeNumber using $fitbit")
 
-        setupButtons()
-        startListeningForHealthData()
+        this.setupButtons()
+        this.startListeningForHealthData()
+        this.startLocationService()
     }
 
+    /**
+     * This function sets the HealthData listener and handles updating the bpm
+     * display.
+     */
     private fun startListeningForHealthData() {
         val bpm = findViewById<TextView>(R.id.bpm)
 
@@ -56,6 +74,24 @@ class Monitoring : AppCompatActivity() {
             .build()
 
         Monitor.update()
+    }
+
+    /**
+     * This function starts the location service and provides it with
+     * location the last location found for processing.
+     */
+    private fun startLocationService() {
+
+        //start LocationService
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    LocationService.processLocation(location)
+                }
+            }
     }
 
     private fun setupButtons() {

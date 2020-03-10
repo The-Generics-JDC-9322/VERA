@@ -42,18 +42,19 @@ import java.lang.Integer.parseInt
  */
 object WebSocketServer {
 
-    /** Reference to the ApplicationEngine that runs the Server*/
+    /** Reference to the ApplicationEngine that runs the Server */
     var appEngine: ApplicationEngine? = null
 
+    /** The Current WebSocketSession */
     var session: WebSocketSession? = null
 
-    /** The current outgoingRequest from the FitbitLocalhostDevice*/
+    /** The current outgoingRequest from the FitbitLocalhostDevice */
     var outgoingRequest : WebSocketRequest = WebSocketRequest.NullRequest
 
+    /** The current incomingRequest from the Fitbit Companion API */
     private var incomingRequest: WebSocketRequest = WebSocketRequest.NullRequest
 
-
-    /** data for sending to or reading from the Companion*/
+    /** data for sending to or reading from the Companion */
     var data: Int? = null
 
     /**
@@ -108,7 +109,7 @@ object WebSocketServer {
                             val text = frame.readText()
                             Log.d("WebSocketServer", "Client SAID: $text")
                             val receivedRequest = WebSocketRequest.getType(text)
-                            handleReceiveMsg(receivedRequest, text, ::close)
+                            handleReceiveMsg(receivedRequest, this, text, ::close)
                         }
                         is Frame.Binary -> {
                             val bytes = frame.readBytes()
@@ -116,7 +117,7 @@ object WebSocketServer {
                             Log.d("WebSocketServer", "Client SAID: $bytesAsString")
 
                             val receivedRequest = WebSocketRequest.getType(bytesAsString)
-                            handleReceiveMsg(receivedRequest, bytesAsString, ::close)
+                            handleReceiveMsg(receivedRequest, this, bytesAsString, ::close)
 
                         }
                     }
@@ -140,11 +141,13 @@ object WebSocketServer {
      */
     private suspend fun handleReceiveMsg(
         receivedRequest: WebSocketRequest,
+        sess: WebSocketSession,
         raw: String,
         close: suspend (CloseReason) -> Unit
     ) {
         when (receivedRequest) {
             WebSocketRequest.EndConnection -> {
+                this.incomingRequest = WebSocketRequest.NullRequest
                 close(CloseReason(CloseReason.Codes.NORMAL, "Client said Bye"))
             }
             WebSocketRequest.NullRequest -> {}
@@ -156,7 +159,10 @@ object WebSocketServer {
                 data = parseInt(intStr)
                 this.incomingRequest = WebSocketRequest.GetHealthData
             }
-            WebSocketRequest.ConnectRequest -> {}
+            WebSocketRequest.ConnectRequest -> {
+                val connectionMsg = WebSocketRequest.ConnectRequest.requestStr
+                sess.outgoing.send(Frame.Text(connectionMsg))
+            }
         }
     }
 
@@ -192,7 +198,8 @@ object WebSocketServer {
 
         //if our waits have succeeded
         if (outReq == WebSocketRequest.NullRequest && sess != null) {
-
+            Log.d("WebSocketServer.request",
+                "outReq is null and found session")
             //set outgoingRequest to the request we are about to perform
             outgoingRequest = request
             sess.outgoing.send(Frame.Text(request.requestStr))
@@ -202,8 +209,12 @@ object WebSocketServer {
                 while (incomingRequest != request) {
                     delay(100)
                 }
+                //set the incomingRequest to null once we read the data
+                incomingRequest = WebSocketRequest.NullRequest
                 data
             } ?: -1
+
+            Log.d("WebSocketServer", "request() requestData: $requestData")
 
             //reset outgoingRequest and data
             outgoingRequest = WebSocketRequest.NullRequest

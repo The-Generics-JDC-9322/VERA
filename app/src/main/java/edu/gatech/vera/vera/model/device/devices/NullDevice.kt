@@ -15,7 +15,7 @@ class NullDevice : WearableDevice {
     }
 
     override suspend fun getHealthData(): HealthData {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       return HealthData(-1)
     }
 
     override suspend fun getStatus(): DeviceStatus {

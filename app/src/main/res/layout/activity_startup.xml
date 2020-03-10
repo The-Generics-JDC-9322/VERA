@@ -19,7 +19,7 @@
             app:layout_constraintTop_toTopOf="parent" android:id="@+id/linearLayout2">
 
         <Button
-                android:text="Login"
+                android:text="@string/login"
                 android:layout_width="158dp"
                 android:layout_height="62dp"
                 android:background="@drawable/startup_login_button"

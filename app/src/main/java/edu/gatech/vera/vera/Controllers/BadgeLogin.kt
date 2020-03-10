@@ -31,12 +31,11 @@ class BadgeLogin : AppCompatActivity() {
     }
 
     /**
-     * This method adds an onclick listener to the login button and makes
-     * the badgeInput only accept numbers.
+     * This method adds an onclick listener to the login button.
      */
     private fun setupInputs() {
         val badgeInput = findViewById<TextInputLayout>(R.id.badge)
-        badgeInput.editText?.inputType = InputType.TYPE_CLASS_NUMBER
+        badgeInput.editText?.inputType = InputType.TYPE_CLASS_TEXT
 
         val loginButton = findViewById<Button>(R.id.loginButton2)
         loginButton.setOnClickListener {
@@ -51,6 +50,7 @@ class BadgeLogin : AppCompatActivity() {
      */
     private fun onLoginClick() {
         val badgeNumber = findViewById<TextInputLayout>(R.id.badge).editText?.text.toString()
+        //TODO badge number validation
 
         val intent = Intent(this, Monitoring::class.java)
         intent.putExtra("fitbit", "Fitbit 01")

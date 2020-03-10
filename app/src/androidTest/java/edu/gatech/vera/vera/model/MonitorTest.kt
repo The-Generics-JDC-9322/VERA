@@ -1,11 +1,14 @@
 package edu.gatech.vera.vera.model
 
 import android.os.Looper
+import edu.gatech.vera.vera.model.device.DeviceFactory
+import edu.gatech.vera.vera.model.device.devices.FitbitLocalhostDevice
 import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.BeforeClass
+import java.lang.Thread.sleep
 
 class MonitorTest {
 
@@ -13,10 +16,12 @@ class MonitorTest {
     fun setHealthData() {
 
         val newVal = -35
-        val oldVal = 0
+        val oldVal = -1
         var monitorListenerVal = oldVal
 
-        assertEquals(Monitor.healthData, HealthData(0))
+        Monitor.healthData = HealthData(oldVal)
+
+        assertEquals(HealthData(oldVal), Monitor.healthData)
 
         Monitor.listener =  {
                 monitorListenerVal = it.bpm
@@ -24,9 +29,9 @@ class MonitorTest {
 
         assertEquals(monitorListenerVal, oldVal)
 
-        Monitor.healthData = HealthData(0)
+        Monitor.healthData = HealthData(newVal)
 
-        assertEquals(Monitor.healthData, HealthData(0))
+        assertEquals(HealthData(newVal), Monitor.healthData)
         assertEquals(monitorListenerVal, newVal)
     }
 
@@ -36,11 +41,12 @@ class MonitorTest {
         val aData = HealthData(30)
         Monitor.healthData = aData
 
-        assertEquals(Monitor.healthData, aData)
+        assertEquals(aData, Monitor.healthData)
 
         Monitor.update()
 
-        assertEquals(Monitor.healthData, HealthData(0))
+        sleep(100)
+        assertEquals(Monitor.healthData, HealthData(-1))
     }
 
     companion object {
