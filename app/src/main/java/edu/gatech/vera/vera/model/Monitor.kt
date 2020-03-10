@@ -6,6 +6,12 @@ import edu.gatech.vera.vera.model.device.WearableDevice
 import edu.gatech.vera.vera.model.device.devices.NullDevice
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.JsonObjectRequest
+
 
 /**
  * This is a singleton Monitor class that handles the Monitoring of all data
@@ -63,6 +69,8 @@ object Monitor {
 
         GlobalScope.launch {
             healthData = fitbit.getHealthData()
+            
+
         }
 
         handler.postDelayed({

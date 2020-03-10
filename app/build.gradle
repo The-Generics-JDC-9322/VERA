@@ -87,6 +87,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0" // JVM dependency
 
     implementation 'org.slf4j:slf4j-android:1.7.30'
+    implementation 'com.android.volley:volley:1.1.1'
 
     androidTestImplementation 'com.tinder.scarlet:scarlet:0.1.9'
     androidTestImplementation 'com.tinder.scarlet:lifecycle-android:0.1.9'
