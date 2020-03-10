@@ -2,7 +2,7 @@ package edu.gatech.vera.vera.model
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import java.util.*
+import java.util.Calendar
 
 /**
  * This implements a Feature object according to

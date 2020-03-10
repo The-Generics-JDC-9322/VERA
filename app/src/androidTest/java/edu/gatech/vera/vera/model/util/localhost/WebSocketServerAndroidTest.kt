@@ -4,7 +4,6 @@ import android.app.Application
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.WebSocket
 import com.tinder.scarlet.lifecycle.android.AndroidLifecycle
-import com.tinder.scarlet.retry.LinearBackoffStrategy
 import com.tinder.scarlet.streamadapter.rxjava2.RxJava2StreamAdapterFactory
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
 import com.tinder.scarlet.ws.Receive
@@ -13,6 +12,7 @@ import io.reactivex.Flowable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
+import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -48,7 +48,7 @@ class WebSocketServerAndroidTest {
 
         val webService = scarletInstance.create<WebService>()
 
-        var loop = AtomicBoolean(true)
+        val loop = AtomicBoolean(true)
 
         webService.observeWebSocketEvent()
             .subscribe {
@@ -95,7 +95,7 @@ class WebSocketServerAndroidTest {
 
         val webService = scarletInstance.create<WebService>()
 
-        var loop = AtomicBoolean(true)
+        val loop = AtomicBoolean(true)
 
         webService.observeWebSocketEvent()
             .subscribe {
@@ -141,6 +141,18 @@ class WebSocketServerAndroidTest {
 
             //Launch server
             WebSocketServer.connect()
+
+        }
+
+        /**
+         * Method to kill the WebSocketServer after running any tests.
+         */
+        @JvmStatic
+        @AfterClass
+        fun killServer() {
+
+            //Launch server
+            WebSocketServer.terminate()
 
         }
     }

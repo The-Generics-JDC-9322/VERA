@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
  */
 class FitbitLocalhostDevice : WearableDevice {
 
-    /** Reference to the WebSocketServer object*/
+    /** Reference to the WebSocketServer object */
     private val webSocket: WebSocketServer = WebSocketServer
 
     /**
@@ -49,6 +49,15 @@ class FitbitLocalhostDevice : WearableDevice {
         Log.d("FitbitLocalhostDevice", "before launch")
         webSocket.connect()
 
+    }
+
+    /**
+     * This method destroys the WebSocketServer that is used by the
+     * FitbitLocalhostDevice. This is meant for cleaning up the application
+     * and will allow you to call webSocket.connect() to create a new server.
+     */
+    fun destroy() {
+        webSocket.terminate()
     }
 
     override fun pauseMonitoring() {
@@ -78,6 +87,7 @@ class FitbitLocalhostDevice : WearableDevice {
      */
     override suspend fun getHealthData(): HealthData {
         //suspending function call to request
+        Log.d("FitbitLocalHostDevice", "requesting health data")
         val bpm = webSocket.request(WebSocketRequest.GetHealthData)
 
         return HealthData(bpm)
