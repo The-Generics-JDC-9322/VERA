@@ -19,6 +19,15 @@ import edu.gatech.vera.vera.model.Monitor
 import edu.gatech.vera.vera.model.Officer
 import edu.gatech.vera.vera.model.device.DeviceFactory
 import edu.gatech.vera.vera.model.device.devices.FitbitLocalhostDevice
+import com.android.volley.toolbox.Volley
+import com.android.volley.RequestQueue
+import android.support.v4.app.SupportActivity
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import org.json.JSONObject
+
 
 class Monitoring : AppCompatActivity() {
 
@@ -53,7 +62,20 @@ class Monitoring : AppCompatActivity() {
      */
     private fun startListeningForHealthData() {
         val bpm = findViewById<TextView>(R.id.bpm)
+        val data = JSONObject("""{"geometry":{"type":"Point","coordinates":[-84.396431,33.778172]}, "properties":{"bpm":100}}""")
+        val url = "https://aqueous-falls-60920.herokuapp.com/hb/5000"
+        val request = JsonObjectRequest(Request.Method.POST,url,data,
+            Response.Listener { response ->
+                // Process the json
+                Log.d("Success", response.toString())
 
+            }, Response.ErrorListener{
+                // Error in request
+                Log.d("ERROR", "Post Request Error Response")
+            })
+        val requestQueue = Volley.newRequestQueue(this)
+        requestQueue.add(request)
+        Log.d("FINISHED", "!!!!!!!!!!!!!!!!!!")
         //define listener to set the bpm field text
         Monitor.listener = {
                 Log.d("Monitoring value", it.toString())
@@ -74,6 +96,7 @@ class Monitoring : AppCompatActivity() {
             .build()
 
         Monitor.update()
+
     }
 
     /**
