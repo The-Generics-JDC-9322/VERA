@@ -1,6 +1,7 @@
 package edu.gatech.vera.vera.Controllers
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
@@ -53,9 +54,18 @@ class Startup : AppCompatActivity() {
 
         //Opens fitbit app if installed
         val packageName = "com.fitbit.FitbitMobile"
-        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        var intent = packageManager.getLaunchIntentForPackage(packageName)
         intent?.addCategory(Intent.CATEGORY_LAUNCHER)
+        if (intent == null) {
+            intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(
+                    "https://play.google.com/store/apps/details?id=$packageName")
+            }
+        }
+
         startActivity(intent)
+
+
 
         //Not fool-proof method of checking if logged in, just that they went to the fitbit app
         //Change later

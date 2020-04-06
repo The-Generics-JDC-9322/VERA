@@ -3,7 +3,7 @@
     <string name="title_activity_fitbit_selector">FitbitSelector</string>
     <string name="domain">navaem8.wixsite.com</string>
     <string name="title_activity_redirect_here">RedirectHereActivity</string>
-    <string name="login">Login</string>
+    <string name="login">Login to Fitbit</string>
     <string name="startup_logo">startup logo</string>
     <string name="badge_id">Badge ID</string>
     <string name="badge_login">Begin</string>
