@@ -145,6 +145,7 @@ object WebSocketServer {
         raw: String,
         close: suspend (CloseReason) -> Unit
     ) {
+        Log.d("WebSocketServer", "Request read as: ${receivedRequest}")
         when (receivedRequest) {
             WebSocketRequest.EndConnection -> {
                 this.incomingRequest = WebSocketRequest.NullRequest
