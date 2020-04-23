@@ -1,5 +1,6 @@
 package edu.gatech.vera.vera.model
 
+import android.util.Log
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import java.util.Calendar
@@ -64,7 +65,8 @@ data class HealthData(@Transient val bpm: Int = -1) {
      * @return the geometry with the coordinates
      */
     fun constructGeometry(): HealthFeatureGeometry? {
-
+        Log.d("Badge", Badge.number)
+        Log.d("Officer", Officer.name)
         val negativeInfArray = doubleArrayOf(Double.NEGATIVE_INFINITY,
             Double.NEGATIVE_INFINITY)
 

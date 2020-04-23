@@ -1,11 +1,22 @@
 package edu.gatech.vera.vera.model
 
+import android.content.Context
 import android.os.Handler
 import android.util.Log
 import edu.gatech.vera.vera.model.device.WearableDevice
 import edu.gatech.vera.vera.model.device.devices.NullDevice
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
+
 
 /**
  * This is a singleton Monitor class that handles the Monitoring of all data
@@ -59,14 +70,31 @@ object Monitor {
      * Update loop requests health data from the WearableDevice every delay.
      * This function sets the Monitor's healthData variable.
      */
-    fun update() {
+    fun update(context: Context) {
 
-        GlobalScope.launch {
+        GlobalScope.launch (Dispatchers.Main){
             healthData = fitbit.getHealthData()
+            var bpm = healthData.bpm
+            Log.d("BPM", healthData.bpm.toString())
+            val json = Json(JsonConfiguration.Stable.copy())
+            val data = JSONObject(json.stringify(HealthData.serializer(), HealthData(bpm)))
+            val url = "https://aqueous-falls-60920.herokuapp.com/hb/" + Badge.number
+            val request = JsonObjectRequest(Request.Method.POST,url,data,
+                Response.Listener { response ->
+                    // Process the json
+                    Log.d("Success", response.toString())
+
+                }, Response.ErrorListener{
+                    // Error in request
+                    Log.d("ERROR", "Post Request Error Response")
+                })
+            val requestQueue = Volley.newRequestQueue(context)
+            requestQueue.add(request)
         }
 
+
         handler.postDelayed({
-            update()
+            update(context)
         }, delay)
     }
 
