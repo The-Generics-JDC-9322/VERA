@@ -32,6 +32,9 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.cancel
 import org.json.JSONObject
 import java.util.jar.Manifest
 
@@ -39,6 +42,7 @@ import java.util.jar.Manifest
 class Monitoring : AppCompatActivity() {
 
     private var monitoring : Boolean = true
+    private var locationListener: android.location.LocationListener? = null
 
     /** The FusedLocationClient for providing location data */
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -105,8 +109,7 @@ class Monitoring : AppCompatActivity() {
         var locationL: Location? = null
         val permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
         ActivityCompat.requestPermissions(this, permissions,0)
-        var locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0F, object : android.location.LocationListener {
+        locationListener = object : android.location.LocationListener {
             override fun onLocationChanged(p0: Location?) {
                 if (p0 != null) {
                     locationL = p0
@@ -115,6 +118,7 @@ class Monitoring : AppCompatActivity() {
                 Log.d("Longitude", locationL!!.longitude.toString())
                 Log.d("Latitude", locationL!!.latitude.toString())
             }
+
             override fun onProviderDisabled(p0: String?) {
 //
             }
@@ -126,7 +130,9 @@ class Monitoring : AppCompatActivity() {
             override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
 //
             }
-        })
+        }
+        var locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0F, locationListener)
 //        fusedLocationClient.lastLocation
 //            .addOnSuccessListener { location : Location? ->
 //                // Got last known location. In some rare situations this can be null.
@@ -138,6 +144,10 @@ class Monitoring : AppCompatActivity() {
 //                }
 //            }
 //        Log.d("Location", locationL.toString())
+    }
+    private fun stopLocationService() {
+        var locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationManager.removeUpdates(locationListener)
     }
 
     private fun setupButtons() {
@@ -196,6 +206,7 @@ class Monitoring : AppCompatActivity() {
         builder.setMessage("Are you sure you want to disconnect your Fitbit and logout of VERA?")
         builder.setPositiveButton("Logout", { dialog, which ->
             dialog.dismiss()
+            stopLocationService()
             Monitor.endMonitoring()
             val intent = Intent(this, Startup::class.java)
             startActivity(intent)
