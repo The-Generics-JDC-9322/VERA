@@ -72,7 +72,7 @@ object Monitor {
      */
     fun update(context: Context) {
 
-        GlobalScope.launch (Dispatchers.Main){
+        GlobalScope.launch(Dispatchers.Main){
             healthData = fitbit.getHealthData()
             var bpm = healthData.bpm
             Log.d("BPM", healthData.bpm.toString())

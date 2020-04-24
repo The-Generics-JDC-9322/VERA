@@ -73,6 +73,7 @@ class FitbitLocalhostDevice : WearableDevice {
         GlobalScope.launch {
             webSocket.request(WebSocketRequest.EndConnection)
         }
+        destroy()
     }
 
     /**
